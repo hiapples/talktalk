@@ -1,0 +1,10 @@
+{
+    "name": "你的應用程式名稱",
+    "short_name": "應用",
+    "description": "這是一個描述你的應用程式的簡短描述。",
+    "start_url": "/member",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#000000"
+  }
+  

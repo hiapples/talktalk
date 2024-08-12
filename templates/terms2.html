@@ -1,0 +1,230 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport"content="width=device-width,initial-scale=1.0,user-scalable=no"/>
+        <link rel="icon" href="static/astronaut.png" type="image/png">
+        <!--主畫面icon-->
+        <link rel='apple-touch-icon' href='static/astronaut.png'>
+        <title>Astronaut.</title>
+
+        <!--jquery-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+        <!--animate-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+        <!--Bootstrap Download 不確定
+        <link rel="stylesheet" href="CSS/bootstrap.css">
+        -->
+
+        <!--Bootstrap cdn-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+        <style>
+            body{
+                background-image: url("/static/bg3.jpg");
+                background-size: 120%;
+                background-attachment: fixed;
+               
+            }
+            .btn {
+                position: relative;
+                min-width: 200px;
+                background: #333333;
+                border: 1px solid #333333;
+                color: #FFFFFF;
+                font-size: clamp(12px,3vw,16px);
+                font-weight: bold;
+                text-align: center;
+                text-decoration: none;
+                text-transform: uppercase;
+                overflow: hidden;
+                padding: 10px 20px;
+            }
+            .btn span {
+                position: relative;
+                z-index: 100;
+            }
+            .btn:before,
+            .btn:after {
+                content: '';
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                top: 0;
+                left: 0;
+            }
+            .btn:before {
+                transform: translate3d(-100%, 0, 0);
+                background-color: #FFFFFF;
+                transition: transform 300ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
+            }
+            .btn:after {
+                background-color: rgb(188, 185, 185);
+                transform: translate3d(100%, 0, 0);
+                transition: transform 300ms 300ms cubic-bezier(0.16, 0.73, 0.58, 0.62); 
+            }
+            .btn:hover:before {
+                transform: translate3d(0, 0, 0);
+            }
+            .btn:hover:after {
+                transform: translate3d(0, 0, 0);
+            }
+            .action{
+                background-color: rgb(188, 185, 185);
+                border-radius: 25px;
+                color: black;
+                font-size: clamp(35px,5vw,50px);
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+            label{
+                font-size: clamp(12px,3vw,16px);
+            }
+            .grey{
+                color:#8E8E8E;
+                font-size: clamp(10px,3vw,12px);
+            }
+            .all{
+                background-color:#E0E0E0;
+                border-radius: 50px;
+                border: 3px solid black;
+            }
+            @media (max-width: 576px) {
+                .all{
+                    margin-top: 30px!important;
+                }
+            }
+            .forget{
+                color: #8E8E8E;
+                font-size: clamp(12px,3vw,16px);
+                text-decoration: none;
+            }
+            .forget:hover{
+                text-decoration: underline;
+            }
+            .bg{
+                position: absolute;
+                width: 30%;
+                z-index: -1;
+            } 
+            .bg2{
+                position: absolute;
+                width: 30%;
+                bottom: 0;
+                right: 0;
+            }
+            .bg3{
+                position: absolute;
+                width: 20%;
+                z-index: -1;
+            }
+ 
+            .scroll::-webkit-scrollbar {              /* 網頁捲軸【寬度】 */
+                width: 10px;
+            }
+            .scroll::-webkit-scrollbar-track {              /* 網頁捲軸【背景】顏色 */
+                background: rgb(188, 185, 185);
+                border-radius: 10px;
+            }
+            .scroll::-webkit-scrollbar-thumb {               /* 網頁捲軸【把手】顏色 */
+                background:rgb(30, 30, 30);
+                border-radius: 10px;
+            }
+            .scroll::-webkit-scrollbar-thumb:hover {          /* 網頁捲軸【滑過時】把手的顏色 */  
+                background:rgb(30, 30, 30);
+            }
+            .all2{
+                width:100%;
+                height:50vh;
+                overflow:auto;
+                font-size: clamp(14px, 2vw, 16px);
+                padding-right: 5px;
+            }
+        </style>
+    </head>
+    <body >  
+        <div>
+            <img src="/static/bg-1.png" class="bg"/>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-10 col-sm-8 col-md-6 col-xl-4 mx-auto mt-5 all">
+                    <div class="d-flex justify-content-center mt-4">
+                        <div class="action">隱私權政策</div>
+                    </div>
+                    <hr/>
+                    <div style="margin-left: 10px;">   
+                        <div class="scroll all2" >
+                            一、隱私權保護政策的適用範圍<br/>
+                            本隱私權保護政策涵蓋我們如何處理您使用本社群軟體服務時所收集到的個人識別資料。此政策不適用於本社群軟體以外的相關連結網站，也不適用於非本社群軟體所委託或參與管理的人員。
+                            <br/>二、個人資料的蒐集、處理及利用方式
+                            <ol>
+                                <li>
+                                    個人資料的收集<br/>
+                                    當您註冊、登入或使用本社群軟體提供的功能服務時，我們可能會請您提供必要的個人資料，例如姓名、電子郵件地址、電話號碼等。這些資料將僅用於特定的目的，例如提供服務、回應您的查詢或進行統計分析。
+                                </li>
+                                <li>
+                                    個人資料的利用<br/>
+                                    本社群軟體不會在未經您同意的情況下將您的個人資料用於其他用途。當您使用社群互動功能（如發帖、留言、私訊等）時，我們可能會記錄您的活動內容以提升使用體驗。
+                                </li>
+                                <li>
+                                    瀏覽資料的自動收集<br/>
+                                    在一般瀏覽或使用本社群軟體時，我們的伺服器會自動記錄包括您使用的IP地址、瀏覽器類型、瀏覽時間、點擊記錄等資訊，以作為網站服務改進的參考。
+                                </li>
+                            </ol>
+                            三、資料之保護<br/>
+                            我們使用先進的技術和管理措施來保護您的個人資料，避免未經授權的存取、變更或洩漏。只有經過授權的員工才能存取您的個人資料，而且這些員工都簽署了保密協議。如果我們委託第三方提供服務，我們會確保其遵守相同的保密義務。
+                            <br/>四、社群軟體對外的相關連結<br/>
+                            本社群軟體可能包含其他網站的連結。這些外部網站不適用本隱私權保護政策，我們建議您在訪問這些連結網站時查閱其隱私權政策。
+                            <br/>五、與第三方共用個人資料的政策<br/>
+                            本社群軟體不會將您的個人資料提供、交換、出租或出售給任何個人、團體或企業，除非經由您書面同意或法律明文規定。例外情況包括：
+                            經由您書面同意。
+                            法律要求。
+                            為保護您的生命、身體、自由或財產安全。
+                            與公務機關或學術研究機構合作，且資料經過匿名化處理。
+                            您在本社群軟體上的行為違反了服務條款或可能危害其他使用者的權益，我們可能會在必要時透露您的個人資料以進行法律行動。
+                            <br/>六、Cookie 的使用<br/>
+                            為了提供您更好的使用體驗，本社群軟體會在您的設備上存取 Cookie。如果您不希望接受 Cookie，您可以在瀏覽器中設置拒絕，但這可能影響部分功能的正常使用。
+                            <br/>七、隱私權保護政策之修訂<br/>
+                            本社群軟體的隱私權保護政策將隨著服務的更新或法規的改變而不時修訂，修訂後的政策將公布於本社群軟體的相關頁面。
+                        </div>                          
+                        <div class="d-flex justify-content-center mt-5">
+                            <a href="/indexsignup"class="forget">返回</a>
+                        </div>     
+                        <div class="d-flex justify-content-center mb-2">
+                            <div class="grey">2024 Powered and secured by PoPalz.</div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>  
+        </div>
+        
+
+
+
+            
+       
+        
+        <script>
+
+
+        </script>
+
+
+        <!--Bootstrap-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <!--Bootstrap tooltips-->
+        <script>
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+        </script>
+        <!--Bootstrap Popovers-->
+        <script>
+            const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+            const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+        </script>
+    </body>
+</html>

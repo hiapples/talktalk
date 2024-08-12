@@ -1,0 +1,3024 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport"content="width=device-width,initial-scale=1.0,user-scalable=no"/>
+        <link rel="manifest" href="static/manifest.json">
+        <link rel="icon" href="static/astronaut.png" type="image/png">
+        <!--主畫面icon-->
+        <link rel='apple-touch-icon' href='static/astronaut.png'>
+        <title>Astronaut.</title>
+
+        <!--jquery-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+        <!--animate-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+        <!--Bootstrap Download 不確定
+        <link rel="stylesheet" href="CSS/bootstrap.css">
+        -->
+
+        <!--順序-->
+        <!--Bootstrap cdn-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <!--css-->
+        <link rel="stylesheet"type="text/css"href="static\sss.css"/>
+    </head>
+    <body >  
+        <div>
+            <img src="/static/bg-1.png" class="bg"/>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-10 col-sm-8 col-md-6 col-xl-4  mt-4 mt-4_all  all" >
+                    <div class="row d-flex align-items-center row1" >
+                        <div id="form1"class="form1 col-12 mx-auto all3 {{name5}}" >
+                            <div id="form1-top" class="form1-top grey d-flex justify-content-around" >
+                                <a id='form1-top-1'href="#" class="action2">推薦貼文</a>
+                                <a id='form1-top-2'href="#" class="action2 form1-top-2" >追蹤貼文</a>
+                            </div> 
+                            <div id='form1-1'class='form1-1 scroll all3' >
+                                <div id="article_list_public" class='article_list_public' ></div>
+                                <div id="loading" >Loading...</div>
+                            </div>
+                            <div id='form1-2' class='form1-2 scroll all3'>
+                                <div id="article_list_public2" class="article_list_public2" ></div>
+                                <div id="loading_2" >Loading...</div>
+                            </div>
+                        </div>
+                        <div id="form2" data-share="{{ share }}" class="form2 {{name2}} {{shared}} col-12 mx-auto all2 scroll" >     
+                            <div class="bookFinder">
+                                <div>
+                                    <form data-bookfinder-form >
+                                        <input  id='search-input'class="search-input form-control mt-2 mb-3" name="search" type="text" placeholder="請輸入搜尋用戶名稱……"autocomplete="off">
+                                    </form>
+                                </div>
+                                <div class="bookList" data-books></div>
+                                <div class="bookList2"></div>   
+                                <div class="bookList_his"></div>
+                                <div class="history2" id='history2'>{{history2}}</div>
+                                <div class="history_photo2" id='history_photo2'>{{history_photo2}}</div>
+                                <div class="loading_name2" id="loading_name2" >Loading...</div>
+                            </div>
+                        </div>
+                        <div id="form3"class="form3 col-12 mx-auto all2 scroll {{name3}}" >
+                            <div class="grey mb-2">發佈貼文</div>
+                            <form action="/member/edit_article" method="POST"class='form_edit_article' >
+                                <textarea class="w-100 edit_article form-control scroll"  placeholder='建立貼文……' name="edit_article"id="edit_article" required  rows="17" ></textarea>              
+                                <div class="d-flex justify-content-end mt-3">
+                                    <button type="submit" class="smallbutton" id="edit_article_button">發佈</button>
+                                </div>
+                            </form> 
+                        </div>
+                        <div class="form4  col-12 mx-auto all2 scroll {{name4}}" id="form4" >
+                            <div >
+                                <div id="ddd_count" class="grey">新通知</div>
+                                <div id="ddd"class='ddd' ></div>
+                            </div>
+                        </div>
+                        <div class="form5 {{name}}  col-12 mx-auto all2 scroll" id="form5">
+                            <div class="conrainer-fluid">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="mt-2">  
+                                            <div  class='share'onclick="share()" data-bs-toggle="modal" data-bs-target="#exampleModal_share" > {{userid}}</div>
+                                            <div class="d-flex mt-2 count" >
+                                                <div  class="count1" id="count1">{{count1}}貼文</div>
+                                                <div  id="count2" onclick='trackpeople2()'data-bs-toggle='modal' data-bs-target='#exampleModal_track'>{{count2}}追蹤</div>
+                                                <div id="count3" onclick='fanspeople2()'data-bs-toggle='modal' data-bs-target='#exampleModal_fans'>{{count3}}粉絲</div>
+                                            </div>
+                                            <div class="mt-2">
+                                                <div class='nickname'>{{nickname}} &nbsp;</div>
+                                            </div>
+                                            <div id='messageboardoutput'>{{messageboard}}</div>
+                                            <div id="more" class="grey">更多</div>
+                                        </div> 
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="d-flex justify-content-end" >
+                                            <form method="POST" action="/member/photo" enctype="multipart/form-data" class="mt-4" >
+                                                <div class="d-flex" >
+                                                    <input type="file"  id="selectedFile" name="selectedFile"  class='selectedFile' required accept="image/png, image/jpg, image/jpeg, image/gif"/>
+                                                    <label  for="selectedFile" class='selectedFile_label'>
+                                                        <img class='selectedFile_label_img' id="photo" src="static/photo/{{photo}}"/>
+                                                    </label>                   
+                                                </div>
+                                            </form> 
+                                            <div class="dropdown">
+                                                <button class=" menu-burger-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <img src="/static/menu-burger.png" class="menu-burger" />
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                    <li>
+                                                        <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal_account">帳戶資料</button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal_messagerecord"onclick="messagerecord(this)">留言紀錄</button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal_delete">註銷帳號</button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal_developertools"onclick="developerclick(this)">開發人員工具</button>
+                                                    </li>
+                                                    <li>     
+                                                        <hr class="hr" />    
+                                                        <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal_signout">登出</button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>    
+                                    </div>   
+                                </div>
+                            </div> 
+                            <div class='div-editbutton'>
+                                <button class="w-100 mt-4 editbutton"data-bs-toggle="modal" data-bs-target="#exampleModal_edit" onclick="hismessageboard()">編輯個人檔案</button>
+                            </div>  
+                            <div id="article_list_private" class="mt-3 article_list_private" ></div>
+                            <div id="loading_name"  >Loading...</div>
+                        </div>
+                    </div> 
+               
+                    <div class="d-flex justify-content-center icon">
+                        <a href="#" class="d-flex justify-content-center align-items-center home_block" >
+                            <img src="/static/home.png" class="home" id="home"/>
+                            <img src="/static/home2.png" class="home" id="home2"/>
+                        </a>
+                        <a  href="#" class="d-flex justify-content-center align-items-center search_block">
+                            <img src="/static/search.png" class="search" id="search"/>
+                            <img src="/static/search2.png" class="search" id="search2"/>
+                        </a>
+                        <a href="#" class="d-flex justify-content-center align-items-center edit_block">
+                            <img src="/static/edit.png" class="edit" id="edit"/>
+                            <img src="/static/edit2.png" class="edit" id="edit2"/>
+                        </a>
+                        <a href="#" class="d-flex justify-content-center align-items-center heart_block {{dot}}" >
+                            <img src="/static/heart.png" class="heart" id="heart" />
+                            <img src="/static/heart3.png" class="heart" id="heart2"/>
+                            <span class='notification-dot' ></span>
+                        </a>
+                        <a href="#" class="d-flex justify-content-center align-items-center user_block">
+                            <img src="/static/user.png" class="user" id="user"/>
+                            <img src="/static/user2.png" class="user" id="user2"/>
+                        </a>
+                    </div>     
+                </div>
+            </div>  
+        </div>
+        
+        <!-- Modal編輯個人檔案 -->
+        <div class="modal fade " id="exampleModal_edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm size_edit mx-auto modal_edit">
+                <div class="modal-content modal_edit_content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel" >編輯個人檔案</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="d-flex justify-content-between">
+                            <div>暱稱:</div>
+                            <button class="smallbutton_form_update" id="form_nickname">修改</button>
+                        </div>      
+                        <div  class="labeltext_nickname" >
+                            {{nickname}}   
+                        </div> 
+                        <form action="/member/nickname" method="POST" class="form_nickname">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <input name="nickname"id="nickname"pattern=".{1,8}"class="form-control" oninvalid="setCustomValidity('最多8位數(包含)');" oninput="setCustomValidity('');" autocomplete='off'/>
+                                </div>
+                                <div class=" d-flex align-items-center">
+                                    <button type="submit"class="smallbutton">確認修改</button>
+                                </div>
+                            </div>  
+                        </form>
+                        <hr/>
+                        <div class="d-flex justify-content-between">
+                            <div >個人簡介:</div>
+                            <button class="smallbutton_form_update"id="form_messageboard">修改</button>
+                        </div>      
+                        <div class="labeltext_messageboard">{{messageboard}}</div> 
+                        <form action="/member/messageboard" method="POST" class="form_messageboard">
+                            <div class="d-flex justify-content-between">
+                                <div >
+                                    <textarea  maxlength="100" class="w-100 edit_article form-control scroll"  name="messageboard"id="messageboard"   rows="5" ></textarea>  
+                                </div>
+                                <div class=" d-flex align-items-center">
+                                    <button type="submit"class="smallbutton"id='confirmButton'>確認修改</button>
+                                </div>
+                            </div>  
+                        </form>  
+                        <hr/>
+                        <div class="d-flex justify-content-end align-items-center">
+                            <div class=" labeltext_deletephoto">移除大頭貼</div>
+                            <form method='POST' action="/member/delete_photo">
+                                <button class="smallbutton_form_update"id="form_delete_photo">移除</button>
+                            </form>                         
+                        </div>                                   
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal帳戶資料 -->
+        <div class="modal fade" id="exampleModal_account" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm size_account mx-auto modal_account" >
+                <div class="modal-content modal_account_content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">帳戶資訊</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div>用戶名稱ID:<br/></div><div class="labeltext">{{userid}}</div>
+                        <hr/>
+                        <div>Email:<br/></div><div class="labeltext_Email" >{{Email}}</div>
+                        <hr/>
+                        <div class="d-flex justify-content-between">
+                            <div>密碼:</div>
+                            <button class="smallbutton_form_update"id="form_password" >修改</button>
+                        </div>      
+                        <div class="labeltext_password">
+                            {{password}}   
+                        </div> 
+                        <form action="/member/password" method="POST" class="form_password">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <input name="update_password"id="update_password"pattern="[a-zA-Z0-9_]{8,25}"onkeyup="this.value=this.value.replace(/[^\w_]/g,'');"class="form-control"required oninvalid="setCustomValidity('8~25位數(包含)，接受英文、數字、底線');" oninput="setCustomValidity('');" autocomplete="off"/>
+                                </div>
+                                <div class=" d-flex align-items-center">
+                                    <button type="submit"class="smallbutton">確認修改</button>
+                                </div>
+                            </div>  
+                        </form>
+                        <hr/>
+                        <div class="d-flex justify-content-between">
+                            <div>手機號碼:</div>
+                            <button class="smallbutton_form_update"id="form_phone" >修改</button>
+                        </div>      
+                        <div class="labeltext_phone" >
+                            {{phone}}   
+                        </div>             
+                        <form action="/member/phone" method="POST" class="form_phone">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <input type="tel"name="phone"id="phone"pattern="09\d{8}"onkeyup="value=value.replace(/[^\d]/g,'')"class="form-control"autocomplete="off"/>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <button type="submit"class="smallbutton">確認修改</button>
+                                </div>
+                            </div>  
+                        </form>
+                        <hr/> 
+                        <div class="d-flex justify-content-end">
+                            <div class="grey">註冊時間:{{date}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        <!-- Modal註銷帳號 -->
+        <div class="modal fade" id="exampleModal_delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm size_account mx-auto modal_delete" >
+                <div class="modal-content modal_delete_content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">註銷帳號</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/member/delete" method="POST" class="form_delete">
+                            <div>
+                                <div>用戶名稱ID:&emsp;<span id="{{userid}}" class="userid modal_delete_userid">{{userid}}</span></div>
+                                <br/>
+                                <div>請再次確認您是否要註銷帳號，如確定請打上您的用戶ID，送出後帳號將被刪除，所有資料將不被保留。</div>
+                                <br/>
+                                <input name="confirm_delete_userid"id="confirm_delete_userid"class="form-control"pattern="[a-zA-Z0-9_]{5,}"required autocomplete="off"/>
+                            </div> 
+                            <div class="mt-5 d-flex justify-content-end">
+                                <div>
+                                    <button  type="submit"class="smallbutton">確定</button>
+                                </div>
+                                <div>
+                                    <button type="button" class="smallbutton"data-bs-dismiss="modal">取消</button> 
+                                </div>                      
+                            </div>
+                        </form>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <!-- Modal登出 -->
+        <div class="modal fade" id="exampleModal_signout" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm size_signout mx-auto modal_signout">
+                <div class="modal-content modal_signout_content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">登出</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        確定要登出嗎?
+                    </div>
+                    <div class="modal-footer">
+                        <form action="/signout" class="d-flex align-items-center">
+                            <button  type="submit"class="smallbutton" id="logoutButton">確定</button>
+                        </form> 
+                        <button type="button" class="smallbutton"data-bs-dismiss="modal">取消</button>                 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal刪私人文章 -->
+        <div class="modal fade" id="exampleModal_article_private_delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm size_article_private_delete mx-auto modal_article_private_delete">
+                <div class="modal-content modal_article_private_delete_content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">刪除貼文</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        確定要刪除嗎?
+                    </div>
+                    <div class="modal-footer">
+                    <form action='/member/article_private_delete' method='post'>
+                        <input type='hidden' name='date' id='articleId'value=""></input>
+                        <button class="smallbutton" >確定</button>
+                    </form>
+                    <button class="smallbutton mt-2" type="button"data-bs-dismiss="modal">取消</button>
+                </div>
+            </div>
+            </div>
+        </div>
+        <!-- Modal編輯文章 -->
+        <div class="modal fade" id="exampleModal_article_private_edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm size_article_private_edit mx-auto modal_article_private_edit">
+                <div class="modal-content modal_article_private_edit_content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">編輯貼文</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action='/member/article_private_edit' method='post'>
+                            <input type='hidden' name='date' id='edit_articleId'value=""></input>
+                            <textarea class="w-100 edit_article form-control scroll"  name="edit"id="edit_articleId2" required  rows="10" ></textarea>  
+                            <div class="d-flex justify-content-end mt-3">
+                                <button class="smallbutton" >確定</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal按讚的人 -->
+        <div class="modal fade" id="exampleModal_people" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-sm size_people mx-auto modal_people">
+                <div class="modal-content modal_people_content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">誰按讚</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body scroll2 modal_people_body">
+                        <div id="aaa"></div>
+                    </div>
+                    <div class="modal-footer modal_people_footer" ></div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal留言的人 -->
+        <div class="modal fade" id="exampleModal_message" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-sm size_message mx-auto modal_message">
+                <div class="modal-content modal_message_content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">誰留言</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body scroll2 modal_message_body"  >
+                        <div id="bbb"></div>
+                    </div>
+                    <div class="modal-footer modal_message_footer" ></div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal留言紀錄 -->
+        <div class="modal fade" id="exampleModal_messagerecord" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-sm size_messagerecord mx-auto modal_messagerecord">
+                <div class="modal-content modal_messagerecord_content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">留言紀錄</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+                    </div>
+                    <div class="modal-body scroll2 modal_messagerecord_body"  >
+                        <div id="ccc"></div>
+                    </div>
+                    <div class="modal-footer modal_messagerecord_footer" >
+                       <button type='button' class='smallbutton_delete messagerecordbutton'  onclick='deleteSelectedItem()'>刪除</button>
+                    </div>
+                </div>  
+            </div>
+        </div>
+          <!-- Modal悄悄話 -->
+          <div class="modal fade" id="exampleModal_whisper" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-sm size_whisper mx-auto modal_whisper">
+                <div class="modal-content modal_whisper_content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">悄悄話</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+                    </div>
+                    <div class="modal-body scroll2 modal_whisper_body"  >
+                        <div id="eee"></div>
+                    </div>
+                </div>  
+            </div>
+        </div>
+        <!-- Modal追蹤 -->
+        <div class="modal fade" id="exampleModal_track" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-sm size_track mx-auto modal_track">
+                <div class="modal-content modal_track_content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">追蹤</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+                    </div>
+                    <div class="modal-body scroll2 modal_track_body"  >
+                        <div id="fff"></div>
+                    </div>
+                    <div class="modal-footer modal_track_footer" ></div>
+                </div>  
+            </div>
+        </div>
+        <!-- Modal粉絲 -->
+        <div class="modal fade" id="exampleModal_fans" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-sm size_fans mx-auto modal_fans">
+                <div class="modal-content modal_fans_content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">粉絲</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+                    </div>
+                    <div class="modal-body scroll2 modal_fans_body"  >
+                        <div id="ggg"></div>
+                    </div>
+                    <div class="modal-footer modal_fans_body_footer" ></div>
+                </div>  
+            </div>
+        </div>
+        <!-- Modal開發人員工具 -->
+        <div class="modal fade" id="exampleModal_developertools" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-sm size_developertools mx-auto modal_developertools">
+                <div class="modal-content modal_developertools_content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">開發人員工具</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+                    </div>
+                    <div class="modal-body scroll2 modal_developertools_body"  >
+                        <div id="developertoolspasswordform">
+                            <div>密碼:</div>
+                            <input class='form-control mt-2' type="password" name="developertoolspassword" id="developertoolspassword" />
+                        </div>
+                        <div id="developertools"></div>
+                    </div>
+                    <div class="modal-footer modal_developertools_footer" ></div>
+                </div>  
+            </div>
+        </div>
+        <!-- Modal分享個人檔案 -->
+        <div class="modal fade" id="exampleModal_share" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm size_share mx-auto modal_share">
+                <div class="modal-content modal_share_content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">分享個人檔案</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        連結已複製到剪貼簿！
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="smallbutton"data-bs-dismiss="modal">確定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+            
+        <script>
+            //更多設定(個人)
+            const messageBoardOutput_name = document.getElementById('messageboardoutput');
+            const moreButton_name = document.getElementById('more');
+            const maxLength_name = 96;
+            const maxLines_name = 3; 
+            const textarea = document.getElementById('messageboard');
+
+            textarea.addEventListener('input', function() {
+                const lineBreaks = (this.value.match(/\n/g) || []).length;
+                if (lineBreaks > 4) {
+                    const lines = this.value.split('\n');
+                    this.value = lines.slice(0, 5).join('\n');
+                }
+            });
+            function getLines(text) {
+                return text.split(/\r?\n/);
+            }
+            function truncateContent(content, visibleLines) {
+                const lines = getLines(content);
+                let truncatedContent = '';
+                let lineCount = 0;
+                
+                for (let i = 0; i < lines.length; i++) {
+                    if (lineCount >= visibleLines) {
+                        break;
+                    }
+
+                    const line = lines[i];
+                    
+                    if (truncatedContent.length + line.length + 1 > maxLength_name) {
+                        truncatedContent += line.substring(0, maxLength_name - truncatedContent.length);
+                        break;
+                    } else {
+                        truncatedContent += line + '\n';
+                        lineCount++;
+                    }
+                }
+                
+                return truncatedContent.trim();
+            }
+
+            function updateMessageBoard() {
+                const content = messageBoardOutput_name.innerHTML;
+                const lines = getLines(content);
+
+                if (lines.length > maxLines_name || content.length > maxLength_name) {
+                    const truncatedContent = truncateContent(content, maxLines_name);
+                    messageBoardOutput_name.innerHTML = truncatedContent;
+                    moreButton_name.style.display = 'inline-block'; 
+                } else {
+                    moreButton_name.style.display = 'none'; 
+                }
+            }
+            function showFullContent() {
+                messageBoardOutput_name.innerHTML = content; 
+                moreButton_name.style.display = 'none'; 
+            }
+            let content = messageBoardOutput_name.innerHTML;
+            updateMessageBoard();
+            moreButton_name.addEventListener('click', showFullContent);
+
+            //留言板更多設定(紀錄內容)
+            function hismessageboard(){
+                fetch('/member/hismessageboard', { method: 'POST'})
+                .then(response => response.json())
+                .then(responseData => {
+                    hismessageboard=responseData
+                    textarea.value = hismessageboard;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+
+            //開發人員工具
+            function developer(){
+                var modalBody = document.getElementById('developertools'); 
+                var options = { method: 'POST'};   
+                fetch('/member/developertools', options)
+                .then(response => response.json())
+                .then(responseData => {
+                    dev=responseData
+                    var all = '';
+                    for (var i = 0; i < dev[2].length; i++) {
+                        var return1 = dev[2][i];
+                        all = all +"<div class='mt-2 developer_set'  >" + return1 + "</div>";
+                    }
+
+                    modalBody.innerHTML="<div class='grey mb-1'>使用狀態&ensp;</div>"+
+                                        "<div>&ensp;總使用者:&ensp;" + dev[0].length + "&ensp;人</div>" +
+                                        "<div>&ensp;總貼文:&ensp;" + dev[1].length + "&ensp;篇</div>" +
+                                        "<div class='grey mt-3 mb-1'>回報問題&ensp;</div>"+
+                                        "<div>&ensp;總回報問題:&ensp;" + dev[2].length + "&ensp;則</div>"+
+                                        all;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+            if(localStorage.getItem("developertoolspasswordform")=="hiapples900"){
+                $('#developertoolspasswordform').hide(); 
+                function developerclick(element) {
+                    developer();
+                }
+            }
+            $('#developertoolspassword').on('keyup', function() {
+                var inputVal = $(this).val();
+                var $developertoolsDiv = $('#developertools');
+                if (inputVal === 'hiapples900') {
+                    developer();
+                    $('#developertoolspasswordform').hide();
+                    localStorage.setItem("developertoolspasswordform", "hiapples900");
+                } else {
+                    $developertoolsDiv.html('');
+                    $('#developertoolspasswordform').show();
+                }
+            });
+            // 顯示紅點
+            function showNotificationDot() {
+                document.querySelector('.notification-dot').style.display = 'block';
+            }
+            // 隱藏紅點
+            function hideNotificationDot() {
+                document.querySelector('.notification-dot').style.display = 'none';
+                fetch('/member/deletedot',{method: 'POST'})
+                .then(response => response.json())
+                .then(responseData => {
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+            if ($(".heart_block").hasClass("true")){
+                showNotificationDot()
+            }
+
+
+            //whisper 
+            function whisper(){
+                var modalBody = document.getElementById('eee');
+                modalBody.innerHTML = 
+
+                                    "<form action='/member/whisper' method='post' autocomplete='off'>" +
+                                        "<input class='w-100 form-control scroll mt-3 edit_article' name='whisper' required  placeholder='偷偷跟" + localStorage.getItem('clickedBook2') + "說……' pattern='.{1,20}'maxlength='20' oninvalid='setCustomValidity(\"最多20位數(包含)\");' oninput='setCustomValidity(\"\");' ></input>" +
+                                        "<input  name='whisper_name' type='hidden' value='" + localStorage.getItem('clickedBook2') + "' />" +
+                                        "<div  class='mt-2 whisper_set'>" + 
+                                            "<button type='submit' class=' smallbutton_whisper' >送出</button>" +
+                                        "</div>" +
+                                    "</form>";
+
+            }
+            //追蹤帳號
+            function track(button) {
+                var formData = new FormData();
+                formData.append("track", localStorage.getItem('clickedBook2'));
+                formData.append("userid", userid);
+                var options = { method: 'POST', body: formData };   
+                fetch('/member/track', options)
+                .then(response => response.json())
+                .then(responseData => {
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+                setTimeout(function() { 
+                    window.location.href = '/member?name2=name2';
+                },400);  
+            }
+            //渲染對方追蹤
+            function trackpeople(){
+                var modalBody = document.getElementById('fff');
+                var formData = new FormData();
+                formData.append("track", localStorage.getItem('clickedBook2'));
+                var options = { method: 'POST', body: formData };   
+                fetch('/member/trackpeople', options)
+                .then(response => response.json())
+                .then(responseData => {
+                    datatrackpeople=responseData
+                    if (datatrackpeople[0].length == 0) {
+                        modalBody.innerHTML = "<div  class='mt-3 trackpeople_set' >無追蹤</div>"
+                    } else {
+                        var all = '';
+                        for (var i = 0; i < datatrackpeople[0].length; i++) {
+                            var people =datatrackpeople[0][i];
+                            var photo = "<img src='static/photo/" + datatrackpeople[1][i] + "' width='37' height='37' class='trackpeople_photo_set' />";
+                            all = all +"<div class='mt-2 trackpeople_all_set'  >" +photo+ people + "</div>";
+                        }
+                        modalBody.innerHTML = all;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+            //渲染對方粉絲
+            function fanspeople(){
+                var modalBody = document.getElementById('ggg');
+                var formData = new FormData();
+                formData.append("fans", localStorage.getItem('clickedBook2'));
+                var options = { method: 'POST', body: formData };   
+                fetch('/member/fanspeople', options)
+                .then(response => response.json())
+                .then(responseData => {
+                    datafanspeople=responseData
+                    if (datafanspeople[0].length == 0) {
+                        modalBody.innerHTML = "<div  class='mt-3 fanspeople_set' >無粉絲</div>"
+                    } else {
+                        var all = '';
+                        for (var i = 0; i < datafanspeople[0].length; i++) {
+                            var people = datafanspeople[0][i];
+                            var photo = "<img src='static/photo/" + datafanspeople[1][i] + "' width='37' height='37' class='fanspeople_photo_set' />";
+                            all = all +"<div class='mt-2 fanspeople_all_set'  >"+ photo +people + "</div>";
+                        }
+                        modalBody.innerHTML = all;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+            //渲染本人追蹤
+            function trackpeople2(){
+                var modalBody = document.getElementById('fff');
+                var formData = new FormData();
+                formData.append("track", userid);
+                var options = { method: 'POST', body: formData };   
+                fetch('/member/trackpeople2', options)
+                .then(response => response.json())
+                .then(responseData => {
+                    datatrackpeople2=responseData
+                    if (datatrackpeople2[0].length == 0) {
+                        modalBody.innerHTML = "<div  class='mt-3 trackpeople2_set' >無追蹤</div>"
+                    } else {
+                        var all = '';
+                        for (var i = 0; i < datatrackpeople2[0].length; i++) {
+                            var people =datatrackpeople2[0][i];
+                            var photo = "<img src='static/photo/" + datatrackpeople2[1][i] + "' width='37' height='37' class='trackpeople2_photo_set' />";
+                            all = all +"<div class='mt-2 trackpeople2_all_set'  >" +photo + people + "</div>";
+                        }
+                        modalBody.innerHTML = all;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+            //渲染本人粉絲
+            function fanspeople2(){
+                var modalBody = document.getElementById('ggg');
+                var formData = new FormData();
+                formData.append("fans", userid);
+                var options = { method: 'POST', body: formData };   
+                fetch('/member/fanspeople2', options)
+                .then(response => response.json())
+                .then(responseData => {
+                    datafanspeople2=responseData
+                    if (datafanspeople2[0].length == 0) {
+                        modalBody.innerHTML = "<div  class='mt-3 fanspeople2_set' >無粉絲</div>"
+                    } else {
+                        var all = '';
+                        for (var i = 0; i < datafanspeople2[0].length; i++) {
+                            var people = datafanspeople2[0][i];
+                            var photo = "<img src='static/photo/" + datafanspeople2[1][i] + "' width='37' height='37' class='fanspeople2_photo_set' />";
+                            all = all +"<div class='mt-2 fanspeople2_all_set'  >"+ photo+people + "</div>";
+                        }
+                        modalBody.innerHTML = all;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+
+            //分頁設定(當前)
+            if ($("#form5").hasClass("name")){
+                $('.form1').hide();
+                $('.form2').hide();
+                $('.form3').hide();
+                $('.form4').hide();
+                $('#home2').hide();
+                $('#search2').hide();
+                $('#edit2').hide();
+                $('#heart2').hide();
+                $('#user').hide();
+            }else if ($("#form2").hasClass("name2")){
+                $('.form1').hide();
+                $('.form3').hide();
+                $('.form4').hide();
+                $('.form5').hide();
+                $('#home2').hide();
+                $('#search').hide();
+                $('#edit2').hide();
+                $('#heart2').hide();
+                $('#user2').hide();
+            }else if ($("#form3").hasClass("name3")){
+                $('.form1').hide();
+                $('.form2').hide();
+                $('.form4').hide();
+                $('.form5').hide();
+                $('#home2').hide();
+                $('#search2').hide();
+                $('#edit').hide();
+                $('#heart2').hide();
+                $('#user2').hide();
+            }else if ($("#form4").hasClass("name4")){
+                $('.form1').hide();
+                $('.form2').hide();
+                $('.form3').hide();
+                $('.form5').hide();
+                $('#home2').hide();
+                $('#search2').hide();
+                $('#edit2').hide();
+                $('#heart').hide();
+                $('#user2').hide();
+            }else if ($("#form1").hasClass("name5")){
+                $('.form2').hide();$('#form1-1').hide();$('#form1-2').show();$('#form1-top-1').hide();$('#form1-top-2').show();
+                $('.form3').hide();
+                $('.form4').hide();
+                $('.form5').hide();
+                $('#home').hide();
+                $('#search2').hide();
+                $('#edit2').hide();
+                $('#heart2').hide();
+                $('#user2').hide();
+            }else{
+                $('.form2').hide();$('#form1-1').show();$('#form1-2').hide();$('#form1-top-1').show();$('#form1-top-2').hide();
+                $('.form3').hide();
+                $('.form4').hide();
+                $('.form5').hide();
+                $('#home').hide();
+                $('#search2').hide();
+                $('#edit2').hide();
+                $('#heart2').hide();
+                $('#user2').hide();
+            }
+    
+            //點擊推薦or追蹤按鈕
+            const form1_top_1 = document.querySelector('#form1-top-1');
+            const form1_top_2 = document.querySelector('#form1-top-2');
+  
+            $('#form1-top-1').click(function() {
+                form1_top_2.classList.add('animate__animated', 'animate__bounceIn');
+                setTimeout(() => {
+                    form1_top_2.classList.remove('animate__animated', 'animate__bounceIn');
+                }, 500);
+                $('#form1-1').hide();
+                $('#form1-2').show();
+                $('#form1-top-1').hide();
+                $('#form1-top-2').show();
+                const newUrl = "/member?name5=name5";
+                window.history.pushState({ path: newUrl }, '', newUrl);
+                loadMorePosts_2()
+            });
+            $('#form1-top-2').click(function() {
+                form1_top_1.classList.add('animate__animated', 'animate__bounceIn');
+                setTimeout(() => {
+                    form1_top_1.classList.remove('animate__animated', 'animate__bounceIn');
+                }, 500);
+                $('#form1-1').show();
+                $('#form1-2').hide();
+                $('#form1-top-1').show();
+                $('#form1-top-2').hide();
+                const newUrl = "/member";
+                window.history.pushState({ path: newUrl }, '', newUrl);
+                loadMorePosts()
+            });
+
+            
+            
+            
+            
+            //按鈕隱藏
+            $('.form_phone').hide();
+            $('.form_password').hide();
+            $('.form_nickname').hide();
+            $('.form_messageboard').hide();
+            //按鈕切換
+            $('#form_phone').on('click', function (e) {
+                e.preventDefault();
+                $('.form_phone').toggle();
+            });
+            $('#form_password').on('click', function (e) {
+                e.preventDefault();
+                $('.form_password').toggle();
+            });
+            $('#form_nickname').on('click', function (e) {
+                e.preventDefault();
+                $('.form_nickname').toggle();
+            });
+            $('#form_messageboard').on('click', function (e) {
+                e.preventDefault();
+                $('.form_messageboard').toggle();
+            });
+            //home按鈕
+            $('.home_block').on('click', function (e) {
+                e.preventDefault();
+                if ($('.form1').is(':visible')) {
+                    if ($('.form1-1').is(':visible')){
+                        $('#form1-1').animate({ scrollTop: 0 }, 400, function() {
+                        window.location.href = "/member"; 
+                    });
+                    }else{
+                        $('#form1-2').animate({ scrollTop: 0 }, 400, function() {
+                            window.location.href = "/member?name5=name5"; 
+                        });
+                    }
+                }
+                $('.form1').show(); 
+                $('.form2').hide();
+                $('.form3').hide();
+                $('.form4').hide();
+                $('.form5').hide();
+                $('#home').hide(); 
+                $('#home2').show();
+                $('#search').show();
+                $('#search2').hide();
+                $('#edit').show();
+                $('#edit2').hide();
+                $('#heart').show();
+                $('#heart2').hide();
+                $('#user').show();
+                $('#user2').hide();
+                if ($('#form1-1').is(':visible')) {
+                    const newUrl = "/member";
+                    window.history.pushState({ path: newUrl }, '', newUrl);
+                }
+                if ($('#form1-2').is(':visible')) {
+                    const newUrl = "/member?name5=name5";
+                    window.history.pushState({ path: newUrl }, '', newUrl);
+                }
+            });
+            //search按鈕
+            $('.search_block').on('click', function (e) {
+                e.preventDefault();
+                if ($('.form2').is(':visible')) {
+                    bookList.style.display = 'none';
+                    searchInput.style.display = 'block';
+                    bookList2.style.display = 'none';
+                    searchInput.value='';
+                    bookList_his.style.display="block"
+                    localStorage.setItem('searchbackVisible2', 'false');//顯示
+                    localStorage.removeItem('clickedBook2');
+                }else{
+                    const newUrl = "/member?name2=name2";
+                    window.history.pushState({ path: newUrl }, '', newUrl);
+                }
+                $('.form1').hide(); 
+                $('.form2').show();
+                $('.form3').hide();
+                $('.form4').hide();
+                $('.form5').hide(); 
+                $('#home').show(); 
+                $('#home2').hide();
+                $('#search').hide();
+                $('#search2').show();
+                $('#edit').show();
+                $('#edit2').hide();
+                $('#heart').show();
+                $('#heart2').hide();
+                $('#user').show();
+                $('#user2').hide();
+            });
+            //edit按鈕
+            $('.edit_block').on('click', function (e) {
+                e.preventDefault();
+                const newUrl = "/member?name3=name3";
+                window.history.pushState({ path: newUrl }, '', newUrl);
+                $('.form1').hide(); 
+                $('.form2').hide();
+                $('.form3').show();
+                $('.form4').hide();
+                $('.form5').hide();
+                $('#home').show(); 
+                $('#home2').hide();
+                $('#search').show();
+                $('#search2').hide();
+                $('#edit').hide();
+                $('#edit2').show();
+                $('#heart').show();
+                $('#heart2').hide();
+                $('#user').show();
+                $('#user2').hide(); 
+            });
+            //heart按鈕
+            $('.heart_block').on('click', function (e) {
+                e.preventDefault();
+                if ($('.form4').is(':visible')) {
+                    $('#form4').animate({ scrollTop: 0 }, 400, function() {
+                        window.location.href = "/member?name4=name4"; 
+                    });
+                }else{
+                    const newUrl = "/member?name4=name4";
+                    window.history.pushState({ path: newUrl }, '', newUrl);
+                }
+                $('.form1').hide(); 
+                $('.form2').hide();
+                $('.form3').hide();
+                $('.form4').show();
+                $('.form5').hide();
+                $('#home').show(); 
+                $('#home2').hide();
+                $('#search').show();
+                $('#search2').hide();
+                $('#edit').show();
+                $('#edit2').hide();
+                $('#heart').hide();
+                $('#heart2').show();
+                $('#user').show();
+                $('#user2').hide(); 
+                hideNotificationDot()
+            });
+            //user按鈕
+            $('.user_block').on('click', function (e) {
+                e.preventDefault();
+                if ($('.form5').is(':visible')) {
+                    $('#form5').animate({ scrollTop: 0 }, 400, function() {
+                        window.location.href = "/member?name=name"; 
+                    });
+                }else{
+                    const newUrl = "/member?name=name";
+                    window.history.pushState({ path: newUrl }, '', newUrl);
+                }
+                $('.form1').hide(); 
+                $('.form2').hide();
+                $('.form3').hide();
+                $('.form4').hide();
+                $('.form5').show();
+                $('#home').show(); 
+                $('#home2').hide();
+                $('#search').show();
+                $('#search2').hide();
+                $('#edit').show();
+                $('#edit2').hide();
+                $('#heart').show();
+                $('#heart2').hide();
+                $('#user').hide();
+                $('#user2').show(); 
+            });
+
+            //通知設定
+            update();
+            function update() {
+                var modalBody = document.getElementById('ddd');
+                var ddd_count = document.getElementById('ddd_count');
+                var options = { method: 'POST' };
+                fetch('/member/notify', options)
+                .then(response => response.json())
+                .then(responseData => {
+                    if (responseData[0].length == 0) {
+                        modalBody.innerHTML = "<div class='mt-3 text-center'>尚無通知</div>";
+                        ddd_count.innerHTML = "<div>新通知("+responseData[0].length+")</div>"
+                    } else {
+                        var all = '';
+                        for (var i = 0; i < responseData[0].length; i++) {
+                            var name = '';
+                            var name2 = '';
+                            if (responseData[1][i] == "0") {
+                                name = "點讚你的貼文";
+                                name2 = "#E1C4C4";
+                            } else if (responseData[1][i] == "2") {
+                                name = "偷偷跟你說悄悄話";
+                                name2 = "#D6D6AD";
+                            } else if (responseData[1][i] == "3") {
+                                name = "已經追蹤了你";
+                                name2 = "#D0D0D0";
+                            } else {
+                                name = "在你的貼文上留言";
+                                name2 = "#B3D9D9";
+                            }
+
+                            var message = '';
+                            if (responseData[4][i].indexOf('_ @') !== -1) {
+                                message = "<br/>";
+                            } else if (responseData[4][i].length > 20) {
+                                message = "<div>「" + responseData[4][i].substring(0, 20) + "..." + "」</div>";
+                            } else {
+                                message = "<div>「" + responseData[4][i] + "」</div>";
+                            }
+
+                            all = "<div class='mt-2' id='container-" + i + "' style='align-items:center;background-color:" + name2 + ";border-radius:10px;padding:15px;'>" +
+                                    "<div class='d-flex update_set' >" +
+                                        "<div class='update_set3'>" + responseData[0][i] + " " + name + "</div>" +
+                                        "<button type='button' class='smallbutton_update'  onclick='deleteSelectedItem2(" + i + ")'>刪除</button>" +
+                                    "</div>" +
+                                    "<div class='d-flex update_set' >" +
+                                        message +
+                                        "<div class='grey update_set2' >" + responseData[3][i] + "</div>" +
+                                    "</div>" +
+                                    "<input type='hidden' name='notify_date' value='" + responseData[2][i] + "'/>" +
+                                "</div>" + all;
+                        }
+                        modalBody.innerHTML = all;
+                        ddd_count.innerHTML = "<div>新通知("+responseData[0].length+")</div>"
+                    }
+                })
+                .catch(error => console.error('發生錯誤:', error));
+            }
+            //通知刪除
+            function deleteSelectedItem2(index) {
+                fetch('/member/notify', { method: 'POST' })
+                .then(response => response.json())
+                .then(responseData => {
+                    responseData[0].splice(index, 1);
+                    responseData[1].splice(index, 1);
+                    var container = document.getElementById('container-' + index);
+                    var notifyDate = container.querySelector('[name="notify_date"]').value;
+                    if (container) {
+                        // Add a class to start the fade-out animation
+                        container.classList.add('fade-out');
+
+                        // Wait for the animation to complete (1 second), then remove the element
+                        setTimeout(() => {
+                            container.remove();
+                        }, 600);
+                    }
+
+                    var formData = new FormData();
+                    formData.append("notify_date", notifyDate);
+                    var options = { method: 'POST', body: formData };
+                    fetch('/member/deletenotify', options)
+                    .then(response => response.json())
+                    .then(responseData => {
+                        if (responseData.length == 0) {
+                            var modalBody = document.getElementById('ddd');
+                            modalBody.innerHTML = "<div class='mt-3 text-center'>尚無通知</div>";
+                        }
+                        var ddd_count = document.getElementById('ddd_count');
+                        ddd_count.innerHTML = "<div>新通知("+responseData.length+")</div>"
+                    })
+                    .catch(error => console.error('發生錯誤:', error));
+
+                })
+                .catch(error => console.error('發生錯誤:', error));
+            }
+
+          
+            //註銷帳號
+            var userid = $('.userid').attr('id')
+            var confirm_delete_userid = document.getElementById("confirm_delete_userid");
+            function validateText(){
+
+                if(userid != confirm_delete_userid.value) {
+                    confirm_delete_userid.setCustomValidity("名稱輸入不正確！");
+                } else {
+                    confirm_delete_userid.setCustomValidity('');
+                }
+                this.value=this.value.replace(/[^\w_]/g,'');
+            }
+            confirm_delete_userid.onkeyup = validateText;
+
+            //換主頁照片
+            selectedFile.onchange = evt => {
+                const [file] = selectedFile.files
+                if (file) {
+   
+                    var formData = new FormData();
+                    formData.append("selectedFile", document.getElementById("selectedFile").files[0]);
+
+                    fetch("/member/photo", {
+                        method: "POST",
+                        body: formData
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        const file = document.getElementById("selectedFile").files[0];
+                        const photo = document.getElementById("photo");
+                        photo.src = URL.createObjectURL(file);
+                        window.location.href = "/member?name=name"; 
+                    })
+                    .catch(error => {
+                        console.log("error", error);
+                    });                                
+                    
+                }                
+            }
+            
+            //點擊給值
+            var w
+            function myFunction(element) {
+                w=element.id.replace('myFunction', ''); 
+                document.getElementById('articleId').value = data[6][w];
+                document.getElementById('edit_articleId').value = data[6][w];
+                document.getElementById('edit_articleId2').value=data[7][w];
+            }
+            //公開按讚數與留言數
+            var x;
+            function myFunction2_heart(element){
+                var modalBody = document.getElementById('aaa');
+                var options = { method: 'POST'};   
+                fetch('/member/myFunction2', options)
+                .then(response => response.json())
+                .then(responseData => {
+                    x=element.id.replace('people', ''); 
+                    if (responseData[0][x].length == 0) {
+                        modalBody.innerHTML = "<div  class='mt-3 myFunction2_set' >無人按讚</div>"
+                    } else {
+                        var all = '';
+                        for (var i = 0; i < responseData[0][x].length; i++) {
+                            var photo = "<img src='static/photo/" + responseData[1][x][i] + "' width='37' height='37' class='myFunction2_photo_set' />";
+                            var people = responseData[0][x][i];
+                            all = all +"<div class='mt-2 myFunction2_all_set'  >"+ photo + people + "</div>";
+                        }
+                        modalBody.innerHTML = all;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+            function myFunction2_message(element){
+                var modalBody = document.getElementById('aaa');
+                var options = { method: 'POST'};   
+                fetch('/member/myFunction2', options)
+                .then(response => response.json())
+                .then(responseData => {
+                    x=element.id.replace('people_message', ''); 
+                    var modalBody2 = document.getElementById('bbb');
+                    if (responseData[2][x].length ==0){
+                        modalBody2.innerHTML="<div  class='mt-3 myFunction2_set2'>無人留言</div>"
+                    }else{
+                        var all2 = '';
+                        for (var j = 0; j < responseData[2][x].length; j++) {
+                            var photo = "<img src='static/photo/" + responseData[4][x][j] + "' width='37' height='37' class='myFunction2_photo_set2' />";
+                            var people = responseData[3][x][j];
+                            var message="<div class='myFunction2_message_set2' >"+responseData[2][x][j]+"</div>"
+                            all2 = all2 +"<div class='mt-2 myFunction2_all_set2'  >"+ photo + people +"<br/>"+message+ "</div>";
+                        }all =  
+                        modalBody2.innerHTML = all2;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+            //公開2按讚數與留言數
+            function myFunction2_track_heart(element){
+                var modalBody = document.getElementById('aaa');
+                var options = { method: 'POST'};   
+                fetch('/member/myFunction2_track', options)
+                .then(response => response.json())
+                .then(responseData => {
+                    x=element.id.replace('track_people', ''); 
+                    if (responseData[0][x].length == 0) {
+                        modalBody.innerHTML = "<div  class='mt-3 myFunction2_track_set' >無人按讚</div>"
+                    } else {
+                        var all = '';
+                        for (var i = 0; i < responseData[0][x].length; i++) {
+                            var photo = "<img src='static/photo/" + responseData[1][x][i] + "' width='37' height='37' class='myFunction2_track_photo_set' />";
+                            var people = responseData[0][x][i];
+                            all = all +"<div class='mt-2 myFunction2_track_all_set'  >"+ photo + people + "</div>";
+                        }
+                        modalBody.innerHTML = all;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+            function myFunction2_track_message(element){
+                var modalBody = document.getElementById('aaa');
+                var options = { method: 'POST'};   
+                fetch('/member/myFunction2_track', options)
+                .then(response => response.json())
+                .then(responseData => {
+                    x=element.id.replace('track_people_message', ''); 
+                    var modalBody2 = document.getElementById('bbb');
+                    if (responseData[2][x].length ==0){
+                        modalBody2.innerHTML="<div  class='mt-3 myFunction2_track_set2'>無人留言</div>"
+                    }else{
+                        var all2 = '';
+                        for (var j = 0; j < responseData[2][x].length; j++) {
+                            var photo = "<img src='static/photo/" + responseData[4][x][j] + "' width='37' height='37' class='myFunction2_track_photo_set2' />";
+                            var people = responseData[3][x][j];
+                            var message="<div class='myFunction2_track_message_set2' >"+responseData[2][x][j]+"</div>"
+                            all2 = all2 +"<div class='mt-2 myFunction2_track_all_set2'  >"+ photo + people +"<br/>"+message+ "</div>";
+                        }all =  
+                        modalBody2.innerHTML = all2;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+            //私人按讚數與留言數
+            function myFunction2_name_heart(element){
+                var modalBody = document.getElementById('aaa');
+                var options = { method: 'POST'}; 
+                fetch('/member/myFunction2_name', options)
+                .then(response => response.json())
+                .then(responseData => {
+                    x=element.id.replace('private_people', '');
+                    if (responseData[0][x].length == 0) {
+                        modalBody.innerHTML = "<div  class='mt-3 myFunction2_name_set' >無人按讚</div>"
+                    } else {
+                        var all = '';
+                        for (var i = 0; i < responseData[0][x].length; i++) {
+                            var photo = "<img src='static/photo/" + responseData[1][x][i] + "' width='37' height='37' class='myFunction2_name_photo_set'/>";
+                            var people = responseData[0][x][i];
+                            all = all +"<div class='mt-2 myFunction2_name_all_set'  >"+ photo + people + "</div>";
+                        }
+                        modalBody.innerHTML = all;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+            function myFunction2_name_message(element){
+                var modalBody = document.getElementById('aaa');
+                var options = { method: 'POST'}; 
+                fetch('/member/myFunction2_name', options)
+                .then(response => response.json())
+                .then(responseData => {
+                    x=element.id.replace('private_people_message', '');
+                    var modalBody2 = document.getElementById('bbb');
+                    if (responseData[2][x].length ==0){
+                        modalBody2.innerHTML="<div  class='mt-3 myFunction2_name_set2'>無人留言</div>"
+                    }else{
+                        var all2 = '';
+                        for (var j = 0; j < responseData[2][x].length; j++) {
+                            var photo = "<img src='static/photo/" + responseData[4][x][j] + "' width='37' height='37' class='myFunction2_name_photo_set2' />";
+                            var people = responseData[3][x][j];
+                            var message="<div class='myFunction2_name_message_set2' >"+responseData[2][x][j]+"</div>"
+                            all2 = all2 +"<div class='mt-2 myFunction2_name_all_set2'  >"+ photo + people +"<br/>"+message+ "</div>";
+                        }all =  
+                        modalBody2.innerHTML = all2;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+            //搜尋按讚數與留言數
+            function myFunction2_name2_heart(element){
+                var modalBody = document.getElementById('aaa');
+                var options = { method: 'POST'}; 
+                fetch(`/member/myFunction2_name2/${localStorage.getItem('clickedBook2')}`, options)
+                .then(response => response.json())
+                .then(responseData => {
+                    x=element.id.replace('search_people', ''); 
+                    if (responseData[0][x].length == 0) {
+                        modalBody.innerHTML = "<div  class='mt-3 myFunction2_name2_set'>無人按讚</div>"
+                    } else {
+                        var all = '';
+                        for (var i = 0; i < responseData[0][x].length; i++) {
+                            var photo = "<img src='static/photo/" + responseData[1][x][i] + "' width='37' height='37' class='myFunction2_name2_photo_set' />";
+                            var people = responseData[0][x][i];
+                            all = all +"<div class='mt-2 myFunction2_name2_all_set'  >"+ photo + people + "</div>";
+                        }
+                        modalBody.innerHTML = all;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+            function myFunction2_name2_message(element){
+                var modalBody = document.getElementById('aaa');
+                var options = { method: 'POST'}; 
+                fetch(`/member/myFunction2_name2/${localStorage.getItem('clickedBook2')}`, options)
+                .then(response => response.json())
+                .then(responseData => {
+                    x=element.id.replace('search_people_message', ''); 
+                    var modalBody2 = document.getElementById('bbb');
+                    if (responseData[2][x].length ==0){
+                        modalBody2.innerHTML="<div  class='mt-3 myFunction2_name2_set2'>無人留言</div>"
+                    }else{
+                        var all2 = '';
+                        for (var j = 0; j < responseData[2][x].length; j++) {
+                            var photo = "<img src='static/photo/" + responseData[4][x][j] + "' width='37' height='37' class='myFunction2_name2_photo_set2' />";
+                            var people = responseData[3][x][j];
+                            var message="<div class='myFunction2_name2_message_set2' >"+responseData[2][x][j]+"</div>"
+                            all2 = all2 +"<div class='mt-2 myFunction2_name2_all_set2'  >"+ photo + people +"<br/>"+message+ "</div>";
+                        }all =  
+                        modalBody2.innerHTML = all2;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+
+
+            //留言紀錄
+            function messagerecord(element) {
+                var modalBody = document.getElementById('ccc');
+                var options = { method: 'POST'};   
+                modalBody.innerHTML = "<div class='d-flex justify-content-center mt-2'>"+
+                                            "<div class='spinner-border text-secondary'  role='status'>"+
+                                                 "<span class='visually-hidden'>Loading...</span>"+
+                                             "</div>"+
+                                      "</div>";
+                fetch('/member/messagerecord', options)
+                .then(response => response.json())
+                .then(responseData => {
+                    if (responseData[0].length == 0) {
+                        modalBody.innerHTML = "<div class='mt-3 messagerecord_no_set'>尚無留言</div>";
+                        var deleteButton = document.querySelector('.messagerecordbutton');
+                        deleteButton.style.display = 'none';
+                    } else {
+                        var all = '';
+                        for (var i = 0; i < responseData[0].length; i++) {
+                            all += "<div class='mt-2 message-container messagerecord_yes_set'> <div  class='d-flex mt-3' id='messagerecord"+i+"'><input class='form-check-input delete-btn' type='radio' value='"+i+"' name='checkbox' id='checkbox"+ i + "' required /><input type='hidden' name='checkbox' value='0'><input type='hidden' name='checkboxdate' value='"+responseData[1][i]+"'/> <div class='messagerecord_yes_set2' >" + responseData[0][i] +"</div></div> <div class='grey messagerecord_yes_set3'>"+responseData[2][i]+"&ensp;的貼文</div></div>";
+                        }      
+                        modalBody.innerHTML = all;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    modalBody.innerHTML = "<div class='mt-3 messagerecord_set' >加載失敗，請稍後重試。</div>";
+                });
+            }
+            //留言紀錄刪除
+            function deleteSelectedItem() {
+                var selectedCheckbox = document.querySelector('.form-check-input.delete-btn:checked');
+                var selectedCheckboxParent = selectedCheckbox.closest('.d-flex');
+                var selectedCheckboxDate = selectedCheckboxParent.querySelector('[name="checkboxdate"]').value;
+                var relatedContent = selectedCheckboxParent.nextElementSibling;
+                var outermostDiv = selectedCheckboxParent.closest('.message-container'); 
+                if (outermostDiv) {
+                    outermostDiv.classList.add('fade-out'); 
+                    setTimeout(() => {
+                        outermostDiv.remove();
+                    }, 600); 
+                } else if (relatedContent && relatedContent.classList.contains('grey')) {
+                    relatedContent.classList.add('fade-out');
+                    setTimeout(() => {
+                        relatedContent.remove();
+                    }, 600);
+                } else {
+                    selectedCheckboxParent.classList.add('fade-out');
+                    setTimeout(() => {
+                        selectedCheckboxParent.remove();
+                    }, 600);
+                }
+                
+
+                var modalBody = document.getElementById('ccc');
+
+                setTimeout(() => {
+                    if (modalBody.querySelectorAll('.d-flex').length === 0) {
+                        modalBody.innerHTML = "<div class='mt-3 deleteSelectedItem_set' >尚無留言</div>";
+                        var deleteButton = document.querySelector('.messagerecordbutton');
+                        deleteButton.style.display = 'none';
+                    }
+                }, 600);
+
+                var formData = new FormData();
+                formData.append("checkboxdate", selectedCheckboxDate);
+                var options = {method: 'POST', body: formData};
+                fetch('/member/deletemessagerecord', options)
+                .then(response => response.json())
+                .then(responseData => {   
+             
+                })
+                .catch(error => console.error('發生錯誤:', error));
+            }
+
+            // 留言關閉modal刷新頁面
+            $('#exampleModal_messagerecord').on('hidden.bs.modal', function (e) {
+                location.reload();
+            })
+
+            //抓公開
+            ////lazy loading
+            let loadedPosts = 0;
+            let allPostsLoaded = false;
+            let loadingPosts = false; 
+            let currentPage = 1; 
+
+            const postsPerPage = 10; 
+
+            container = document.getElementById("form1-1");
+            container.addEventListener('scroll', function() {
+                var scrollPosition = container.scrollTop + container.clientHeight;
+                var scrollThreshold = container.scrollHeight - 20; 
+                if (scrollPosition >= scrollThreshold && !allPostsLoaded && !loadingPosts) {
+
+                    $("#loading").show();
+                    loadingPosts = true; 
+                    loadMorePosts();
+
+                }
+            });
+
+            function loadMorePosts() {
+                fetch(`/member/article_public?page=${currentPage}&limit=${postsPerPage}`, {
+                    method: "POST"
+                })
+                .then(response => response.json())
+                .then(responseData => {
+                    data2 = responseData;
+                    let prdname = '';
+                    let el = document.querySelector("#article_list_public");
+                    let postsToLoad = data2[0].length;
+
+                    if (postsToLoad === 0) {
+                        allPostsLoaded = true; 
+                    } else {
+                        for (let i = 0; i < postsToLoad; i++) {
+                            let name = 'heart.png';
+                            let name2 = 'messenger.png';
+                            for (let j = 0; j < data2[3].length; j++) {
+                                if (data2[4][i] == data2[3][j]) {
+                                    name = 'heart2.png';
+                                    break;
+                                }
+                            }
+                            prdname += "<div id='" + (loadedPosts + i) + "'><hr/>" +
+                                            "<div class='d-flex'>" +
+                                                "<a href='#'><div onclick='myFunction7(this)' id='my7" + (loadedPosts + i) + "'><img src='static/photo/" + data2[2][i] + "' width='37' height='37' class='loadMorePosts_set2' /></div></a>" +
+                                                "<div class='loadMorePosts_set' >" + 
+                                                    "<div class='d-flex justify-content-between'>" +
+                                                        "<a href=# class='loadMorePosts_set3' ><div onclick='myFunction7(this)' id='" + (loadedPosts + i) + "'>" + data2[1][i] + "</div></a>" +
+                                                        "<div class='grey'>" + data2[7][i] + "</div>" +
+                                                    "</div>" +
+                                                    "<div class='loadMorePosts_set4' >" + data2[0][i] + "</div>" +
+                                                    "<div class='mt-2'>" +
+                                                        "<a onclick='myFunction3(this)' class='" + (loadedPosts + i) + "' href='#'>" +
+                                                            "<img id='public_img"+(loadedPosts + i)+"' src='/static/" + name + "'  class='loadMorePosts_set5'  />" +
+                                                        "</a>" +
+                                                        "<a onclick='myFunction2_heart(this)'  href='#' id='people" + (loadedPosts + i) + "' data-bs-toggle='modal' data-bs-target='#exampleModal_people'  class='forget loadMorePosts_set6'>" +
+                                                            data2[5][i] + "人按讚" +
+                                                        "</a>" +
+                                                        "<a onclick='myFunction5(this)' id='" + (loadedPosts + i) + "' href='#'>" +
+                                                            "<img src='/static/" + name2 + "'  class='loadMorePosts_set7' />" +
+                                                        "</a>" +
+                                                        "<a onclick='myFunction2_message(this)' href='#' id='people_message" + (loadedPosts + i) + "' data-bs-toggle='modal' data-bs-target='#exampleModal_message'  class='forget loadMorePosts_set8'>" +
+                                                            data2[6][i] + "人留言" +
+                                                        "</a>" +
+                                                        "<div>" +
+                                                            "<input name='message2' id='my5_id"+(loadedPosts + i)+"' type='hidden' value='" + data2[4][i] + "'/>" +
+                                                            "<input name='message' id='my5"+(loadedPosts + i)+"' class='form-control loadMorePosts_set9'  placeholder='留言:'autocomplete='off' required/>" +
+                                                            "<button id='my5_button"+(loadedPosts + i)+"'class='smallbutton loadMorePosts_set10' >送出</button>" +
+                                                        "</div>" +
+                                                    "</div>" +
+                                                "</div>" +
+                                            "</div>" +
+                                        "</div>";
+                        }
+
+                        el.innerHTML += prdname.replace(RegExp("\n", "g"), "<br>");
+
+                        loadedPosts += postsToLoad;
+                        currentPage++;
+                    }
+
+
+                    if (postsToLoad < postsPerPage) {
+                        allPostsLoaded = true; 
+                    }
+                    $("#loading").hide();
+                    loadingPosts = false; 
+                })
+                .catch(error => console.error('發生錯誤:', error));     
+            }
+            loadMorePosts();
+
+
+            
+            //抓公開2
+            ////lazy loading
+            let loadedPosts_2 = 0;
+            let allPostsLoaded_2 = false;
+            let loadingPosts_2 = false; 
+            let currentPage_2 = 1; 
+
+            const postsPerPage_2 = 10;
+
+            container_2 = document.getElementById("form1-2");
+            container_2.addEventListener('scroll', function() {
+                var scrollPosition = container_2.scrollTop + container_2.clientHeight;
+                var scrollThreshold = container_2.scrollHeight - 20; 
+                if (scrollPosition >= scrollThreshold && !allPostsLoaded_2 && !loadingPosts_2) {
+
+                    $("#loading_2").show();
+                    loadingPosts_2 = true; 
+
+                    loadMorePosts_2();
+                }
+            });
+
+
+            function loadMorePosts_2() {
+                fetch(`/member/article_public2?page=${currentPage_2}&limit=${postsPerPage_2}`, {
+                    method: "POST"
+                })
+                .then(response => response.json())
+                .then(responseData => {
+                    data2_track = responseData;
+                    let prdname = '';
+                    let el = document.querySelector("#article_list_public2");
+
+                    let postsToLoad_2 = data2_track[0].length;
+
+                    if (postsToLoad_2 === 0) {
+                        allPostsLoaded_2 = true; 
+                    } else {
+                        for (let i = 0; i < postsToLoad_2; i++) {
+                                let name = 'heart.png';
+                                let name2 = 'messenger.png';
+                            for (let j = 0; j < data2_track[3].length; j++) {
+                                if (data2_track[4][i] == data2_track[3][j]) {
+                                    name = 'heart2.png';
+                                    break;
+                                }
+                            }
+                            prdname += "<div id='track" + (loadedPosts_2 + i) + "'><hr/>" +
+                                            "<div class='d-flex'>" +
+                                                "<a href='#'><div onclick='myFunction7_track(this)' id='my7_track" + (loadedPosts_2 + i) + "'><img src='static/photo/" + data2_track[2][i] + "' width='37' height='37' class='loadMorePosts_2_set2' /></div></a>" +
+                                                "<div class='loadMorePosts_2_set' >" + 
+                                                    "<div class='d-flex justify-content-between'>" +
+                                                        "<a href=# class='loadMorePosts_2_set3' ><div onclick='myFunction7_track(this)' id='my7_track" + (loadedPosts_2 + i) + "'>" + data2_track[1][i] + "</div></a>" +
+                                                        "<div class='grey'>" + data2_track[7][i] + "</div>" +
+                                                    "</div>" +
+                                                    "<div class='loadMorePosts_2_set4' >" + data2_track[0][i] + "</div>" +
+                                                    "<div class='mt-2'>" +
+                                                        "<a onclick='myFunction3_track(this)' class='" + (loadedPosts_2 + i) + "' href='#'>" +
+                                                            "<img id='track_img"+(loadedPosts_2 + i)+"'src='/static/" + name + "'  class='loadMorePosts_2_set5'  />" +
+                                                        "</a>" +
+                                                        "<a onclick='myFunction2_track_heart(this)'  href='#' id='track_people" + (loadedPosts_2 + i) + "' data-bs-toggle='modal' data-bs-target='#exampleModal_people'  class='forget loadMorePosts_2_set6'>" +
+                                                            data2_track[5][i] + "人按讚" +
+                                                        "</a>" +
+                                                        "<a onclick='myFunction5_track(this)' id='my5track" + (loadedPosts_2 + i) + "' href='#'>" +
+                                                            "<img src='/static/" + name2 + "'  class='loadMorePosts_2_set7' />" +
+                                                        "</a>" +
+                                                        "<a onclick='myFunction2_track_message(this)'  href='#' id='track_people_message" + (loadedPosts_2 + i) + "'data-bs-toggle='modal' data-bs-target='#exampleModal_message'  class='forget loadMorePosts_2_set8'>" +
+                                                            data2_track[6][i] + "人留言" +
+                                                        "</a>" +
+                                                        "<div>" +
+                                                            "<input name='message2' id='my5_track_id"+(loadedPosts_2 + i)+"' type='hidden' value='" + data2_track[4][i] + "'/>" +
+                                                            "<input name='message' id='my5_track"+(loadedPosts_2 + i)+"' class='form-control loadMorePosts_2_set9'  placeholder='留言:'autocomplete='off' required/>" +
+                                                            "<button id='my5_button_track"+(loadedPosts_2 + i)+"' class='smallbutton loadMorePosts_2_set10' >送出</button>" +
+                                                        "</div>" +
+                                                    "</div>" +
+                                                "</div>" +
+                                            "</div>" +
+                                        "</div>";
+                        }
+                    }
+
+                    if (prdname === "") {
+
+                        if (loadedPosts_2 === 0) {
+                            el.innerHTML = "<hr/><div class='loadMorePosts_2_set11' >尚無追蹤</div>";
+                        }
+                    } else {
+                        el.innerHTML += prdname.replace(RegExp("\n", "g"), "<br>");
+                    }
+
+                    loadedPosts_2 += postsToLoad_2;
+
+
+                    currentPage_2++;
+                    if (postsToLoad_2 < postsPerPage_2) {
+                        allPostsLoaded_2 = true; 
+                    }
+                    $("#loading_2").hide();
+                    loadingPosts_2 = false; 
+                })
+                .catch(error => console.error('發生錯誤:', error));
+            }
+            loadMorePosts_2();
+      
+            //抓私人
+            ////lazy loading
+            let loadedPosts_name = 0;
+            let allPostsLoaded_name = false;
+            let loadingPosts_name = false; 
+            let currentPage_name = 1; 
+
+            const postsPerPage_name = 10;
+
+            container_name = document.getElementById("form5");
+            container_name.addEventListener('scroll', function() {
+                var scrollPosition = container_name.scrollTop + container_name.clientHeight;
+                var scrollThreshold = container_name.scrollHeight - 20;
+                if (scrollPosition >= scrollThreshold && !allPostsLoaded_name && !loadingPosts_name) {
+
+                    $("#loading_name").show();
+                    loadingPosts_name = true; 
+
+                    loadMorePosts_name();
+                }
+            });
+
+
+            function loadMorePosts_name() {
+                fetch(`/member/article_private?page=${currentPage_name}&limit=${postsPerPage_name}`, {
+                    method: "POST"
+                })
+                .then(response => response.json())
+                .then(responseData => {
+                    data = responseData;
+                    let prdname = '';
+                    let el = document.querySelector("#article_list_private");
+
+                    let postsToLoad_name = data[0].length;
+
+                    if (postsToLoad_name === 0) {
+                        allPostsLoaded_name = true; 
+                    } else {
+                        for (let i = 0; i < postsToLoad_name; i++) {
+                                let name = 'heart.png';
+                                let name2 = 'messenger.png';
+                            for (let j = 0; j < data[1].length; j++) {
+                            if (data[2][i] == data[1][j]) {
+                                name = 'heart2.png';
+                                break;
+                            }
+                        }
+                        prdname += "<div id='name" + (loadedPosts_name + i) + "'><hr/>" +
+                                        "<div class='d-flex'>" +
+                                            "<div><img src='static/photo/{{photo}}' width='37' height='37' class='loadMorePosts_name_set2' /></div>" +
+                                            "<div class='loadMorePosts_name_set' >" +
+                                                "<div class='d-flex justify-content-between align-items-center'>" +
+                                                    "<div>{{userid}}</div>" +
+                                                    "<div class='d-flex align-items-center'>" +
+                                                        "<div class='grey loadMorePosts_name_set3' >" + data[5][i] + "</div>" +
+                                                        "<div class='dropdown' onclick='myFunction(this)' id='myFunction"+(loadedPosts_name + i)+"'>" +
+                                                            "<button class='menu-burger-btn' type='button' id='dropdownMenuButton2' data-bs-toggle='dropdown' aria-expanded='false'>" +
+                                                                "<img src='/static/more.png' class='menu-burger'/>" +
+                                                            "</button>" +
+                                                            "<ul class='dropdown-menu' aria-labelledby='dropdownMenuButton1' >" +
+                                                                "<li><button class='dropdown-item' data-bs-toggle='modal' data-bs-target='#exampleModal_article_private_edit' >編輯貼文</button></li>" +
+                                                                "<li><button class='dropdown-item' data-bs-toggle='modal' data-bs-target='#exampleModal_article_private_delete'>刪除</button></li>" +
+                                                            "</ul>" +
+                                                        "</div>" +
+                                                    "</div>" +
+                                                "</div >" +
+                                                "<div class='loadMorePosts_name_set4' >" + data[0][i] + "</div>" +
+                                                "<div class='mt-2'>" +
+                                                    "<a onclick='myFunction4(this)' class='" + (loadedPosts_name + i) + "' href='#'>" +
+                                                        "<img id='private_img"+(loadedPosts_name + i)+"'src='/static/" + name + "'  class='loadMorePosts_name_set5' />" +
+                                                    "</a>" +
+                                                    "<a onclick='myFunction2_name_heart(this)' href='#' id='private_people" + (loadedPosts_name + i) + "' data-bs-toggle='modal' data-bs-target='#exampleModal_people'  class='forget loadMorePosts_name_set6'>" + data[3][i] + "人按讚</a>" +
+                                                    "<a onclick='myFunction5_name(this)' id='my5name" + i + "' href='#'>" +
+                                                        "<img src='/static/" + name2 + "'  class='loadMorePosts_name_set7' />" +
+                                                    "</a>" +
+                                                    "<a onclick='myFunction2_name_message(this)' href='#' id='private_people_message" + (loadedPosts_name + i) + "'data-bs-toggle='modal' data-bs-target='#exampleModal_message'  class='forget loadMorePosts_name_set8' >" + data[4][i] + "人留言</a>" +
+                                                    "<div>" +
+                                                        "<input name='message2' id='my5_name_id"+(loadedPosts_name + i)+"' type='hidden' value='" + data[2][i] + "'/>" +
+                                                        "<input name='message' id='my5_name"+(loadedPosts_name + i)+"' class='form-control loadMorePosts_name_set9'  placeholder='留言:'autocomplete='off' required/>" +
+                                                        "<button id='my5_button_name"+(loadedPosts_name + i)+"' class='smallbutton loadMorePosts_name_set10' >送出</button>" +
+                                                    "</div>" +
+                                                "</div >" +
+                                            "</div>" +
+                                        "</div>" +
+                                    "</div>";
+                        }
+                    }
+
+                    if (prdname === "") {
+                        if (loadedPosts_name === 0) {
+                            el.innerHTML = "<hr/><div class='loadMorePosts_name_set11' >尚無貼文</div>";
+                        }
+                    } else {
+                        el.innerHTML += prdname.replace(RegExp("\n", "g"), "<br>");
+                    }
+
+                    loadedPosts_name += postsToLoad_name;
+
+
+                    currentPage_name++;
+                    if (postsToLoad_name < postsPerPage_name) {
+                        allPostsLoaded_name = true; 
+                    }
+
+                    $("#loading_name").hide();
+                    loadingPosts_name = false; 
+                })
+                .catch(error => console.error('發生錯誤:', error));
+            }
+            loadMorePosts_name();
+
+            //愛心公
+            var isRunning = false; // 設置一個旗標變數來追踪操作狀態
+            function myFunction3(element) {
+                if (isRunning) return; // 如果操作正在進行，直接返回
+                isRunning = true; // 標記操作開始
+                var y = element.className;
+                var $heartIcon = $(element).find('img');
+                var currentSrc = $heartIcon.attr('src');
+                var iconValue = (currentSrc === '/static/heart.png') ? 'heart2.png' : 'heart.png';
+                var iconValue2 = (currentSrc === '/static/heart.png') ? userid : '';
+
+                // 愛心動畫
+                const heart = document.querySelector('#public_img' + y);
+                if (heart) {
+                    heart.classList.add('animate__animated', 'animate__bounceIn');
+                    setTimeout(() => {
+                        heart.classList.remove('animate__animated', 'animate__bounceIn');
+                    }, 200);
+                }
+
+                var formData = new FormData();
+                if (iconValue2 != '') {
+                    formData.append("heart_icon", iconValue2);
+                    formData.append("date", data2[8][y]);
+                    if (localStorage.getItem('clickedBook2') !== null) {
+                        formData.append("search", localStorage.getItem('clickedBook2'));
+                    }
+                    var options = { method: 'POST', body: formData };
+                    fetch('/member/heart_icon_public', options)
+                        .then(response => response.json())
+                        .then(responseData => {
+                            data3 = responseData;
+                            $heartIcon.attr('src', '/static/' + iconValue);
+                            document.getElementById("people" + y).innerText = data3[0][y].length + "人按讚";
+                            // 私人
+                            let name = null;
+                            for (let i = 0; i < data3[1].length; i++) {
+                                if (data2[8][y] === data3[1][i]) {
+                                    name = i;
+                                    break;
+                                }
+                            }
+                            if (name !== null) {
+                                const privatePeopleElement_name = document.getElementById("private_people" + name);
+                                if (privatePeopleElement_name) {
+                                    privatePeopleElement_name.innerText = data3[2][name].length + "人按讚";
+                                    const imgElement_name = document.getElementById('private_img' + name);
+                                    if (imgElement_name) {
+                                        imgElement_name.setAttribute('src', '/static/heart2.png');
+                                    }
+                                }
+                            }
+                            // 追蹤
+                            let name5 = null;
+                            for (let i = 0; i < data3[3].length; i++) {
+                                if (data2[8][y] === data3[3][i]) {
+                                    name5 = i;
+                                    break;
+                                }
+                            }
+                            if (name5 !== null) {
+                                const privatePeopleElement_name5 = document.getElementById("track_people" + name5);
+                                if (privatePeopleElement_name5) {
+                                    privatePeopleElement_name5.innerText = data3[4][name5].length + "人按讚";
+                                    const imgElement_name5 = document.getElementById('track_img' + name5);
+                                    if (imgElement_name5) {
+                                        imgElement_name5.setAttribute('src', '/static/heart2.png');
+                                    }
+                                }
+                            }
+                            // 查詢
+                            let name2 = null;
+                            for (let i = 0; i < data3[5].length; i++) {
+                                if (data2[8][y] === data3[5][i]) {
+                                    name2 = i;
+                                    break;
+                                }
+                            }
+                            if (name2 !== null) {
+                                const privatePeopleElement_name2 = document.getElementById("search_people" + name2);
+                                if (privatePeopleElement_name2) {
+                                    privatePeopleElement_name2.innerText = data3[6][name2].length + "人按讚";
+                                    const imgElement_name2 = document.getElementById('search_img' + name2);
+                                    if (imgElement_name2) {
+                                        imgElement_name2.setAttribute('src', '/static/heart2.png');
+                                    }
+                                }
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        })
+                        .finally(() => {
+                            isRunning = false; // 操作完成後重置旗標
+                        });
+                } else {
+                    formData.append("heart_icon", userid);
+                    formData.append("date", data2[8][y]);
+                    if (localStorage.getItem('clickedBook2') !== null) {
+                        formData.append("search", localStorage.getItem('clickedBook2'));
+                    }
+                    var options = { method: 'POST', body: formData };
+                    fetch('/member/unheart_icon_public', options)
+                        .then(response => response.json())
+                        .then(responseData => {
+                            data3 = responseData;
+                            $heartIcon.attr('src', '/static/' + iconValue);
+                            document.getElementById("people" + y).innerText = data3[0][y].length + "人按讚";
+                            // 私人
+                            let name = null;
+                            for (let i = 0; i < data3[1].length; i++) {
+                                if (data2[8][y] === data3[1][i]) {
+                                    name = i;
+                                    break;
+                                }
+                            }
+                            if (name !== null) {
+                                const privatePeopleElement_name = document.getElementById("private_people" + name);
+                                if (privatePeopleElement_name) {
+                                    privatePeopleElement_name.innerText = data3[2][name].length + "人按讚";
+                                    const imgElement_name = document.getElementById('private_img' + name);
+                                    if (imgElement_name) {
+                                        imgElement_name.setAttribute('src', '/static/heart.png');
+                                    }
+                                }
+                            }
+                            // 追蹤
+                            let name5 = null;
+                            for (let i = 0; i < data3[3].length; i++) {
+                                if (data2[8][y] === data3[3][i]) {
+                                    name5 = i;
+                                    break;
+                                }
+                            }
+                            if (name5 !== null) {
+                                const privatePeopleElement_name5 = document.getElementById("track_people" + name5);
+                                if (privatePeopleElement_name5) {
+                                    privatePeopleElement_name5.innerText = data3[4][name5].length + "人按讚";
+                                    const imgElement_name5 = document.getElementById('track_img' + name5);
+                                    if (imgElement_name5) {
+                                        imgElement_name5.setAttribute('src', '/static/heart.png');
+                                    }
+                                }
+                            }
+                            // 查詢
+                            let name2 = null;
+                            for (let i = 0; i < data3[5].length; i++) {
+                                if (data2[8][y] === data3[5][i]) {
+                                    name2 = i;
+                                    break;
+                                }
+                            }
+                            if (name2 !== null) {
+                                const privatePeopleElement_name2 = document.getElementById("search_people" + name2);
+                                if (privatePeopleElement_name2) {
+                                    privatePeopleElement_name2.innerText = data3[6][name2].length + "人按讚";
+                                    const imgElement_name2 = document.getElementById('search_img' + name2);
+                                    if (imgElement_name2) {
+                                        imgElement_name2.setAttribute('src', '/static/heart.png');
+                                    }
+                                }
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        })
+                        .finally(() => {
+                            isRunning = false; // 操作完成後重置旗標
+                        });
+                }
+            }
+            //愛心公2
+            var isRunningTrack = false; // 設置一個旗標變數來追踪操作狀態
+            function myFunction3_track(element) {
+                if (isRunningTrack) return; // 如果操作正在進行，直接返回
+                isRunningTrack = true; // 標記操作開始
+
+                var y = element.className;
+                var $heartIcon = $(element).find('img');
+                var currentSrc = $heartIcon.attr('src');
+                var iconValue = (currentSrc === '/static/heart.png') ? 'heart2.png' : 'heart.png';
+                var iconValue2 = (currentSrc === '/static/heart.png') ? userid : '';
+
+                // 愛心動畫
+                const heart = document.querySelector('#track_img' + y);
+                if (heart) {
+                    heart.classList.add('animate__animated', 'animate__bounceIn');
+                    setTimeout(() => {
+                        heart.classList.remove('animate__animated', 'animate__bounceIn');
+                    }, 200);
+                }
+
+                var formData = new FormData();
+                var url = iconValue2 !== '' ? '/member/heart_icon_public2' : '/member/unheart_icon_public2';
+                formData.append("heart_icon", iconValue2 || userid);
+                formData.append("date", data2_track[8][y]);
+                if (localStorage.getItem('clickedBook2') !== null) {
+                    formData.append("search", localStorage.getItem('clickedBook2'));
+                }
+
+                var options = { method: 'POST', body: formData };
+                fetch(url, options)
+                    .then(response => response.json())
+                    .then(responseData => {
+                        $heartIcon.attr('src', '/static/' + iconValue);
+                        document.getElementById("track_people" + y).innerText = responseData[0][y].length + "人按讚";
+
+                        // 公開
+                        let name5 = null;
+                        for (let i = 0; i < responseData[1].length; i++) {
+                            if (data2_track[8][y] === responseData[1][i]) {
+                                name5 = i;
+                                break;
+                            }
+                        }
+                        if (name5 !== null) {
+                            const privatePeopleElement_name5 = document.getElementById("people" + name5);
+                            if (privatePeopleElement_name5) {
+                                privatePeopleElement_name5.innerText = responseData[2][name5].length + "人按讚";
+                                const imgElement_name5 = document.getElementById('public_img' + name5);
+                                if (imgElement_name5) {
+                                    imgElement_name5.setAttribute('src', '/static/heart' + (iconValue2 ? '2' : '') + '.png');
+                                }
+                            }
+                        }
+
+                        // 查詢
+                        let name2 = null;
+                        for (let i = 0; i < responseData[3].length; i++) {
+                            if (data2_track[8][y] === responseData[3][i]) {
+                                name2 = i;
+                                break;
+                            }
+                        }
+                        if (name2 !== null) {
+                            const privatePeopleElement_name2 = document.getElementById("search_people" + name2);
+                            if (privatePeopleElement_name2) {
+                                privatePeopleElement_name2.innerText = responseData[4][name2].length + "人按讚";
+                                const imgElement_name2 = document.getElementById('search_img' + name2);
+                                if (imgElement_name2) {
+                                    imgElement_name2.setAttribute('src', '/static/heart' + (iconValue2 ? '2' : '') + '.png');
+                                }
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    })
+                    .finally(() => {
+                        isRunningTrack = false; // 操作完成後重置旗標
+                    });
+            }
+
+        //愛心私
+        var isRunningPrivate = false; // 設置一個旗標變數來追踪操作狀態
+        function myFunction4(element) {
+            if (isRunningPrivate) return; // 如果操作正在進行，直接返回
+            isRunningPrivate = true; // 標記操作開始
+
+            var z = element.className;
+            var $heartIcon = $(element).find('img');
+            var currentSrc = $heartIcon.attr('src');
+            var iconValue = (currentSrc === '/static/heart.png') ? 'heart2.png' : 'heart.png';
+            var iconValue2 = (currentSrc === '/static/heart.png') ? userid : '';
+
+            // 愛心動畫
+            const heart = document.querySelector('#private_img' + z);
+            if (heart) {
+                heart.classList.add('animate__animated', 'animate__bounceIn');
+                setTimeout(() => {
+                    heart.classList.remove('animate__animated', 'animate__bounceIn');
+                }, 200);
+            }
+
+            var formData = new FormData();
+            var url = iconValue2 !== '' ? '/member/heart_icon_private' : '/member/unheart_icon_private';
+            formData.append("heart_icon", iconValue2 || userid);
+            formData.append("date2", data[6][z]);
+
+            var options = { method: 'POST', body: formData };
+            fetch(url, options)
+                .then(response => response.json())
+                .then(data_private => {
+                    $heartIcon.attr('src', '/static/' + iconValue);
+                    document.getElementById("private_people" + z).innerText = data_private[0][z].length + "人按讚";
+
+                    // 公開
+                    let name5 = null;
+                    for (let i = 0; i < data_private[1].length; i++) {
+                        if (data[6][z] === data_private[1][i]) {
+                            name5 = i;
+                            break;
+                        }
+                    }
+                    if (name5 !== null) {
+                        const privatePeopleElement_name5 = document.getElementById("people" + name5);
+                        if (privatePeopleElement_name5) {
+                            privatePeopleElement_name5.innerText = data_private[2][name5].length + "人按讚";
+                            const imgElement_name5 = document.getElementById('public_img' + name5);
+                            if (imgElement_name5) {
+                                imgElement_name5.setAttribute('src', '/static/heart' + (iconValue2 ? '2' : '') + '.png');
+                            }
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                })
+                .finally(() => {
+                    isRunningPrivate = false; // 操作完成後重置旗標
+                });
+        }
+        //愛心查
+        var isRunningSearch = false; // 設置一個旗標變數來追踪操作狀態
+        function myFunction6(element) {
+            if (isRunningSearch) return; // 如果操作正在進行，直接返回
+            isRunningSearch = true; // 標記操作開始
+
+            var u = element.className;
+            var $heartIcon = $(element).find('img');
+            var currentSrc = $heartIcon.attr('src');
+            var iconValue = (currentSrc === '/static/heart.png') ? 'heart2.png' : 'heart.png';
+            var iconValue2 = (currentSrc === '/static/heart.png') ? userid : '';
+
+            // 愛心動畫
+            const heart = document.querySelector('#search_img' + u);
+            if (heart) {
+                heart.classList.add('animate__animated', 'animate__bounceIn');
+                setTimeout(() => {
+                    heart.classList.remove('animate__animated', 'animate__bounceIn');
+                }, 200);
+            }
+
+            var formData = new FormData();
+            var url = iconValue2 !== '' ? 
+                `/member/heart_icon_search/${localStorage.getItem('clickedBook2')}` :
+                `/member/unheart_icon_search/${localStorage.getItem('clickedBook2')}`;
+            
+            formData.append("heart_icon", iconValue2 || userid);
+            formData.append("date2", data4[12][u]);
+
+            var options = { method: 'POST', body: formData };
+            fetch(url, options)
+                .then(response => response.json())
+                .then(data_search => {
+                    $heartIcon.attr('src', '/static/' + iconValue);
+                    document.getElementById("search_people" + u).innerText = data_search[0][u].length + "人按讚";
+                    
+                    // 公開
+                    let name5 = null;
+                    for (let i = 0; i < data_search[1].length; i++) {
+                        if (data4[12][u] === data_search[1][i]) {
+                            name5 = i;
+                            break;
+                        }
+                    }
+                    if (name5 !== null) {
+                        const privatePeopleElement_name5 = document.getElementById("people" + name5);
+                        if (privatePeopleElement_name5) {
+                            privatePeopleElement_name5.innerText = data_search[2][name5].length + "人按讚";
+                            const imgElement_name5 = document.getElementById('public_img' + name5);
+                            if (imgElement_name5) {
+                                imgElement_name5.setAttribute('src', '/static/heart' + (iconValue2 ? '2' : '') + '.png');
+                            }
+                        }
+                    }
+
+                    // 追蹤
+                    let name5_2 = null;
+                    for (let i = 0; i < data_search[3].length; i++) {
+                        if (data4[12][u] === data_search[3][i]) {
+                            name5_2 = i;
+                            break;
+                        }
+                    }
+                    if (name5_2 !== null) {
+                        const privatePeopleElement_name5_2 = document.getElementById("track_people" + name5_2);
+                        if (privatePeopleElement_name5_2) {
+                            privatePeopleElement_name5_2.innerText = data_search[4][name5_2].length + "人按讚";
+                            const imgElement_name5_2 = document.getElementById('track_img' + name5_2);
+                            if (imgElement_name5_2) {
+                                imgElement_name5_2.setAttribute('src', '/static/heart' + (iconValue2 ? '2' : '') + '.png');
+                            }
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                })
+                .finally(() => {
+                    isRunningSearch = false; // 操作完成後重置旗標
+                });
+        }
+
+
+        
+
+        //公開留言
+        function myFunction5(element) {
+            var a = element.id.replace('MY5', '');
+            var elementToToggle = document.getElementById("my5" + a);
+            var elementToToggle_id = document.getElementById("my5_id" + a);
+            var elementToToggle2 = document.getElementById("my5_button" + a);
+
+            if (elementToToggle) {
+                elementToToggle.style.display = (elementToToggle.style.display === 'none' || elementToToggle.style.display === '') ? 'inline' : 'none';
+            }
+
+            if (elementToToggle2) {
+                elementToToggle2.style.display = (elementToToggle2.style.display === 'none' || elementToToggle2.style.display === '') ? 'inline' : 'none';
+            }
+
+            if (!elementToToggle2.handleClick) {
+                elementToToggle2.handleClick = function(event) {
+                    event.preventDefault();
+                    if (elementToToggle.value !== "") {
+                        var formData = new FormData();
+                        formData.append("message", elementToToggle.value);
+                        formData.append("message2", elementToToggle_id.value);
+                        if (localStorage.getItem('clickedBook2') !== null) {
+                            formData.append("search", localStorage.getItem('clickedBook2'));
+                        }
+                        var options = { method: 'POST', body: formData };
+                        fetch('/member/message', options)
+                            .then(response => response.json())
+                            .then(responseData => {
+                                document.getElementById("people_message" + a).innerText = responseData[0][a].length + "人留言";
+                                elementToToggle2.style.display = 'none';
+                                elementToToggle.value = "";
+                                elementToToggle.style.display = 'none';
+
+                                // Handle '私人' section
+                                let name = responseData[1].indexOf(elementToToggle_id.value);
+                                if (name !== -1) {
+                                    const privatePeopleElement_name = document.getElementById("private_people_message" + name);
+                                    if (privatePeopleElement_name) {
+                                        privatePeopleElement_name.innerText = responseData[2][name].length + "人留言";
+                                    }
+                                }
+
+                                // Handle '追蹤' section
+                                let name5 = responseData[3].indexOf(elementToToggle_id.value);
+                                if (name5 !== -1) {
+                                    const privatePeopleElement_name5 = document.getElementById("track_people_message" + name5);
+                                    if (privatePeopleElement_name5) {
+                                        privatePeopleElement_name5.innerText = responseData[4][name5].length + "人留言";
+                                    }
+                                }
+
+                                // Handle '查詢' section
+                                let name2 = responseData[5].indexOf(elementToToggle_id.value);
+                                if (name2 !== -1) {
+                                    const privatePeopleElement_name2 = document.getElementById("search_people_message" + name2);
+                                    if (privatePeopleElement_name2) {
+                                        privatePeopleElement_name2.innerText = responseData[6][name2].length + "人留言";
+                                    }
+                                }
+                            })
+                            .catch(error => console.error('發生錯誤:', error));
+                    }
+                };
+                elementToToggle2.addEventListener('click', elementToToggle2.handleClick);
+            }
+        }
+
+        //公開2留言
+        function myFunction5_track(element) {
+            var a = element.id.replace('my5track', '');
+            var elementToToggle = document.getElementById("my5_track" + a);
+            var elementToToggle_id = document.getElementById("my5_track_id" + a); 
+            var elementToToggle2 = document.getElementById("my5_button_track" + a);
+
+            if (elementToToggle) {
+                elementToToggle.style.display = (elementToToggle.style.display === 'none' || elementToToggle.style.display === '') ? 'inline' : 'none';
+            }
+
+            if (elementToToggle2) {
+                elementToToggle2.style.display = (elementToToggle2.style.display === 'none' || elementToToggle2.style.display === '') ? 'inline' : 'none';
+            }
+
+            if (!elementToToggle2.handleClick_track) {
+                elementToToggle2.handleClick_track = function handleClick_track(event) {
+                    event.preventDefault();
+
+                    if (elementToToggle.value !== "") {
+                        var formData = new FormData(); 
+                        formData.append("message", elementToToggle.value);
+                        formData.append("message2", elementToToggle_id.value); 
+                        if (localStorage.getItem('clickedBook2') !== null) {
+                            formData.append("search", localStorage.getItem('clickedBook2'));
+                        } 
+                        var options = { method: 'POST', body: formData };
+                        fetch('/member/message_track', options)
+                        .then(response => response.json())
+                        .then(responseData => {
+                            document.getElementById("track_people_message"+a).innerText = responseData[0][a].length + "人留言";
+                            elementToToggle2.style.display = 'none';
+                            elementToToggle.value = "";
+                            elementToToggle.style.display = 'none';
+                            //公開
+                            let name5 = null;
+                            for (let i = 0; i < responseData[1].length; i++) {
+                                if (elementToToggle_id.value === responseData[1][i]) {
+                                    name5 = i;
+                                    break;
+                                }
+                            }
+
+                            if (name5 !== null) {
+                                const privatePeopleElement_name5 = document.getElementById("people_message" + name5);
+                                if (privatePeopleElement_name5) {
+                                    privatePeopleElement_name5.innerText = responseData[2][name5].length + "人留言";
+                                }
+                            } 
+
+                            // 查詢
+                            let name2 = null;
+                            for (let i = 0; i < responseData[3].length; i++) {
+                                if (elementToToggle_id.value === responseData[3][i]) {
+                                    name2 = i;
+                                    break;
+                                }
+                            }
+                            if (name2 !== null) {
+                                const privatePeopleElement_name2 = document.getElementById("search_people_message" + name2);
+                                if (privatePeopleElement_name2) {
+                                    privatePeopleElement_name2.innerText = responseData[4][name2].length + "人留言";
+                                }
+                            } 
+                        })
+                        .catch(error => console.error('發生錯誤:', error));
+                    }
+                };
+                elementToToggle2.addEventListener('click', elementToToggle2.handleClick_track);
+            }
+        }
+
+        //私人留言
+        function myFunction5_name(element) {
+            var a = element.id.replace('my5name', ''); 
+            var elementToToggle = document.getElementById("my5_name" + a);
+            var elementToToggle_id = document.getElementById("my5_name_id" + a);
+            var elementToToggle2 = document.getElementById("my5_button_name" + a);
+
+            if (elementToToggle) {
+                elementToToggle.style.display = (elementToToggle.style.display === 'none' || elementToToggle.style.display === '') ? 'inline' : 'none';
+            }
+
+            if (elementToToggle2) {
+                elementToToggle2.style.display = (elementToToggle2.style.display === 'none' || elementToToggle2.style.display === '') ? 'inline' : 'none';
+            }
+
+            if (!elementToToggle2.handleClick_name) {
+                elementToToggle2.handleClick_name = function handleClick_name(event) {
+                    event.preventDefault();
+
+                    if (elementToToggle.value !== "") {
+                        var formData = new FormData(); 
+                        formData.append("message", elementToToggle.value);
+                        formData.append("message2", elementToToggle_id.value); 
+                        var options = { method: 'POST', body: formData };
+
+                        fetch('/member/message_name', options)
+                            .then(response => response.json())
+                            .then(responseData => {
+                                document.getElementById("private_people_message" + a).innerText = responseData[0][a].length + "人留言";
+                                elementToToggle2.style.display = 'none';
+                                elementToToggle.value = "";
+                                elementToToggle.style.display = 'none';
+                                // Handle公開
+                                let name5 = null;
+                                for (let i = 0; i < responseData[1].length; i++) {
+                                    if (elementToToggle_id.value === responseData[1][i]) {
+                                        name5 = i;
+                                        break;
+                                    }
+                                }
+                                if (name5 !== null) {
+                                    const privatePeopleElement_name5 = document.getElementById("people_message" + name5);
+                                    if (privatePeopleElement_name5) {
+                                        privatePeopleElement_name5.innerText = responseData[2][name5].length + "人留言";
+                                    }
+                                }
+                            })
+                            .catch(error => console.error('發生錯誤:', error));
+                    }
+                };
+                elementToToggle2.addEventListener('click', elementToToggle2.handleClick_name);
+            }
+        }
+
+
+        //搜尋留言
+        function myFunction5_name2(element) {
+            var a = element.id.replace('my5nametwo', ''); 
+            var elementToToggle = document.getElementById("my5_nametwo" + a);
+            var elementToToggle_id = document.getElementById("my5_nametwo_id" + a);
+            var elementToToggle2 = document.getElementById("my5_button_nametwo" + a);
+
+            if (elementToToggle) {
+                elementToToggle.style.display = (elementToToggle.style.display === 'none' || elementToToggle.style.display === '') ? 'inline' : 'none';
+            }
+
+            if (elementToToggle2) {
+                elementToToggle2.style.display = (elementToToggle2.style.display === 'none' || elementToToggle2.style.display === '') ? 'inline' : 'none';
+            }
+
+            // Ensure only one event listener is attached
+            if (!elementToToggle2.handleClick_name2) {
+                elementToToggle2.handleClick_name2 = function handleClick_name2(event) {
+                    event.preventDefault();
+
+                    if (elementToToggle.value !== "") {
+                        var formData = new FormData(); 
+                        formData.append("message", elementToToggle.value);
+                        formData.append("message2", elementToToggle_id.value); 
+                        var options = { method: 'POST', body: formData };
+                        fetch(`/member/message_name2/${localStorage.getItem('clickedBook2')}`, options)
+                            .then(response => response.json())
+                            .then(responseData => {
+                                document.getElementById("search_people_message" + a).innerText = responseData[0][a].length + "人留言";
+                                elementToToggle2.style.display = 'none';
+                                elementToToggle.value = "";
+                                elementToToggle.style.display = 'none';
+
+                                // Handle公開
+                                let name5 = null;
+                                for (let i = 0; i < responseData[1].length; i++) {
+                                    if (elementToToggle_id.value === responseData[1][i]) {
+                                        name5 = i;
+                                        break;
+                                    }
+                                }
+                                if (name5 !== null) {
+                                    const privatePeopleElement_name5 = document.getElementById("people_message" + name5);
+                                    if (privatePeopleElement_name5) {
+                                        privatePeopleElement_name5.innerText = responseData[2][name5].length + "人留言";
+                                    }
+                                }
+
+                                // Handle追蹤
+                                let name5_2 = null;
+                                for (let i = 0; i < responseData[3].length; i++) {
+                                    if (elementToToggle_id.value === responseData[3][i]) {
+                                        name5_2 = i;
+                                        break;
+                                    }
+                                }
+                                if (name5_2 !== null) {
+                                    const privatePeopleElement_name5_2 = document.getElementById("track_people_message" + name5_2);
+                                    if (privatePeopleElement_name5_2) {
+                                        privatePeopleElement_name5_2.innerText = responseData[4][name5_2].length + "人留言";
+                                    }
+                                }
+                            })
+                            .catch(error => console.error('發生錯誤:', error));
+                    }
+                };
+                elementToToggle2.addEventListener('click', elementToToggle2.handleClick_name2);
+            }
+        }
+
+
+
+        //登出移除
+        function handleLogout() {
+            localStorage.removeItem('searchbackVisible2');
+            localStorage.removeItem('clickedBook2');
+            localStorage.removeItem('developertoolspasswordform');
+        }
+        document.getElementById('logoutButton').addEventListener('click', handleLogout);
+
+
+        //搜尋
+        const history= JSON.parse(document.getElementById('history2').innerHTML);
+        const history_photo=JSON.parse(document.getElementById('history_photo2').innerHTML);
+        const bookList = document.querySelector("[data-books]");
+        const bookList_his= document.querySelector(".bookList_his");
+        const searchInput = document.querySelector("[name='search']");
+        const bookList2 = document.querySelector(".bookList2"); 
+
+        //歷史紀錄渲染
+        const html2 = history.map((book, index) => {
+            return `<div class='container-fluid'>
+                        <div class='d-flex align-items-center justify-content-between'>
+                            <div class='bookList__item2 d-flex mt-2 html2_set' data-photo="${history_photo[index]}" >
+                                <img src="static/photo/${history_photo[index]}"  class='html2_photo_set' />
+                                <div class='html2_div_set' >
+                                    <a href='#' class='html2_a_set' >${book}</a>
+                                </div>
+                            </div>
+                            <img  class='smallbuttonX' src='static/x.png' />
+                        </div>
+                    </div>`;
+        }).join("");
+
+        if (history.length === 0) {
+            bookList_his.innerHTML = "<div class='grey bookList_his_set' >歷史紀錄</div><div class='bookList_his_set2' >無歷史紀錄</div>";
+        }else{
+            bookList_his.innerHTML = "<div class='grey bookList_his_set3' >歷史紀錄</div>" + html2;
+        }
+        
+
+        // 顯示 searchbackVisible2 是否為TRUE
+        var searchbackVisible2 = localStorage.getItem('searchbackVisible2');
+        if (searchbackVisible2 === 'true') {
+            bookList_his.style.display = 'none';
+            searchInput.style.display = 'none';
+            bookList2.style.display = 'block';           
+        } else {
+            bookList_his.style.display = 'block';
+            searchInput.style.display = 'block';
+            bookList2.style.display = 'none';
+        }   
+
+        //刪除按紐 歷史紀錄
+        bookList_his.addEventListener('click', function(event) {
+            // 檢查點擊的元素是否是 "刪除" 按鈕
+            if (event.target.classList.contains('smallbuttonX')) {
+                // 獲取要刪除的書籍項目
+                const bookItem = event.target.parentElement.parentElement;
+                // 從 bookList_his 中移除該項目
+                bookList_his.removeChild(bookItem);
+                const clickedBook = event.target.parentElement.querySelector('a').textContent;
+                var formData = new FormData();
+                formData.append("deletehistory", clickedBook);
+                var options = {method: 'POST',body:formData};
+                fetch('/member/deletehistory',options) 
+                .then(response => response.json())  
+                .then(responseData => {
+
+                })
+                .catch(error => console.error('發生錯誤:', error));
+                setTimeout(function() { 
+                    window.location.href = '/member?name2=name2';
+                },200);
+            }
+        });
+
+        //點擊歷史紀錄搜尋
+        const bookItems2 = document.querySelectorAll('.bookList__item2');
+        bookItems2.forEach((bookItem2, index) => {
+            bookItem2.addEventListener('click', () => {
+                var clickedBook2 = history[index];
+                var clickedPhoto = history_photo[index];
+                localStorage.setItem('searchbackVisible2', 'true');//顯示
+                localStorage.setItem('clickedBook2',history[index]); 
+                setTimeout(function() { 
+                    bookList_his.style.display = 'none';
+                    searchInput.style.display = 'none';
+                    bookList2.style.display = 'block';
+                },300)
+                setTimeout(function() { 
+                    window.location.href = '/member?name2=name2';
+                },100);
+            });
+        });
+
+        //分享網址
+        if ($("#form2").hasClass("shared")){
+            var share = document.getElementById('form2').getAttribute('data-share');
+            localStorage.setItem('clickedBook2',share);
+            localStorage.setItem('searchbackVisible2', 'true');//顯示
+            bookList_his.style.display = 'none';
+            searchInput.style.display = 'none';
+            bookList2.style.display = 'block';
+        }
+        function share(){
+            var text = `/member/${userid}`
+            navigator.clipboard.writeText(text).then(function() {
+            }).catch(function(error) {
+                console.error("複製失敗：", error);
+            });
+        }
+
+        //渲染bookList2搜尋頁面
+        ////lazy loading
+        let loadedPosts_name2 = 0;
+        let allPostsLoaded_name2 = false;
+        let loadingPosts_name2 = false;
+        let currentPage_name2 = 1; 
+
+        const postsPerPage_name2 = 10;
+
+        let container_name2 = document.getElementById("form2");
+
+        container_name2.addEventListener('scroll', function() {
+            let scrollPosition = container_name2.scrollTop + container_name2.clientHeight;
+            let scrollThreshold = container_name2.scrollHeight - 20;
+
+            if (scrollPosition >= scrollThreshold && !allPostsLoaded_name2 && !loadingPosts_name2) {
+  
+
+                $("#loading_name2").show();
+                loadingPosts_name2 = true;
+
+                loadMorePosts_name2();
+            }
+        });
+
+        let tf=0;
+        function loadMorePosts_name2() {
+            let clickedBook2 = localStorage.getItem('clickedBook2');
+            fetch(`/member/${clickedBook2}?page=${currentPage_name2}&limit=${postsPerPage_name2}`, {
+                method: "POST"
+            })
+            .then(response => response.json())
+            .then(responseData => {
+                data4 = responseData;
+                let prdname = '';
+                let el = document.querySelector(".bookList2");
+
+                let postsToLoad_name2 = data4[0].length;
+
+                if (postsToLoad_name2 === 0) {
+                    allPostsLoaded_name2 = true;
+                }else{
+                    for (let i = 0; i < postsToLoad_name2; i++) {
+                        let name = 'heart.png';
+                        let name2 = 'messenger.png';
+                        for (let j = 0; j < data4[1].length; j++) {
+                            if (data4[2][i] == data4[1][j]) {
+                                name = 'heart2.png';
+                                break;
+                            }
+                        }
+                                prdname += "<div  id='name2" + (loadedPosts_name2 + i) + "'>" +
+                                                "<hr/>" +
+                                                "<div class='d-flex'>" +
+                                                    "<div><img src='static/photo/" + data4[5] + "' width='37' height='37' class='loadMorePosts_name2_set2' /></div>" +
+                                                    "<div class='loadMorePosts_name2_set' >" +
+                                                        "<div class='d-flex justify-content-between'>" +
+                                                            "<div>" + clickedBook2 + "</div>" +
+                                                            "<div class='grey'>" + data4[8][i] + "</div>" +
+                                                        "</div>" +
+                                                        "<div class='loadMorePosts_name2_set3' >" + data4[0][i] + "</div>" +
+                                                        "<div class='mt-2'>" +
+                                                            "<a onclick='myFunction6(this)' class='" + (loadedPosts_name2 + i) + "' href='#'><img id='search_img" + (loadedPosts_name2 + i) + "' src='/static/" + name + "'  class='loadMorePosts_name2_set6' /></a>" +
+                                                            "<a onclick='myFunction2_name2_heart(this)' href='#' id='search_people" + (loadedPosts_name2 + i) + "' data-bs-toggle='modal' data-bs-target='#exampleModal_people'  class='forget loadMorePosts_name2_set4'>" + data4[3][i] + "人按讚</a>" +
+                                                            "<a onclick='myFunction5_name2(this)' id='my5nametwo" + (loadedPosts_name2 + i) + "' href='#'><img src='/static/" + name2 + "' class='loadMorePosts_name2_set5' /></a>" +
+                                                            "<a onclick='myFunction2_name2_message(this)' href='#' id='search_people_message" + (loadedPosts_name2 + i) + "' data-bs-toggle='modal' data-bs-target='#exampleModal_message'  class='forget loadMorePosts_name2_set7'>" + data4[4][i] + "人留言</a>" +
+                                                            "<div>" +
+                                                                "<input name='message2' id='my5_nametwo_id" + (loadedPosts_name2 + i) + "' type='hidden' value='" + data4[2][i] + "'/>" +
+                                                                "<input name='message' id='my5_nametwo" + (loadedPosts_name2 + i) + "' class='form-control loadMorePosts_name2_set8'  placeholder='留言:' autocomplete='off' required/>" +
+                                                                "<button id='my5_button_nametwo" + (loadedPosts_name2 + i) + "' class='smallbutton loadMorePosts_name2_set9' >送出</button>" +
+                                                            "</div>" +
+                                                        "</div>" +
+                                                    "</div>" +
+                                                "</div>" +
+                                            "</div>";
+                    }
+                }
+                if(data4[6]==""){
+                    data4[6]="<br/>"
+                }
+                let top2 = "<div>" +
+                                "<div class='row'>" +
+                                    "<div class='col-8'>" +
+                                        "<div class='mt-2'>" +
+                                            "<div class='loadMorePosts_name2_set10'>" + clickedBook2 + "</div>" +
+                                            "<div class='d-flex mt-2 loadMorePosts_name2_set11' >" +
+                                                "<div class='loadMorePosts_name2_set12'  id='count1'>" + data4[12].length + "貼文</div>" +
+                                                "<div class='loadMorePosts_name2_set13' id='count2' data-bs-toggle='modal' data-bs-target='#exampleModal_track' onclick='trackpeople()'>" + data4[9].length + "追蹤</div>" +
+                                                "<div id='count3' data-bs-toggle='modal' data-bs-target='#exampleModal_fans' onclick='fanspeople()'>" + data4[10].length + "粉絲</div>" +
+                                            "</div>" +
+                                            "<div class='d-flex mt-2'>" +
+                                                "<div class='loadMorePosts_name2_set14' >" + data4[6] + "</div>" +
+                                            "</div>" +
+                                            "<div id='messageboardoutput_name2'>" + data4[7] + "</div>" +
+                                            "<div id='more_name2' class='grey'>更多</div>" +
+                                        "</div>" +
+                                    "</div>" +
+                                    "<div class='col-4'>" +
+                                        "<div class='d-flex justify-content-end'>" +
+                                            "<div class='mt-4 loadMorePosts_name2_set15' id='searchback' >" +
+                                                "<img id='photo' src='static/photo/" + data4[5] + "'  class='loadMorePosts_name2_set16' />" +
+                                            "</div>" +
+                                        "</div>" +
+                                    "</div>" +
+                                "</div>" +
+                            "</div>" +
+                            "<div class='d-flex justify-content-between'>" +
+                                "<button class='mt-4 editbutton loadMorePosts_name2_set17'  onclick='track(this)'>" + (data4[11].includes(localStorage.getItem('clickedBook2')) ? '取消追蹤' : '追蹤') + "</button>" +
+                                "<button  class='mt-4 editbutton loadMorePosts_name2_set18' data-bs-toggle='modal' data-bs-target='#exampleModal_whisper' onclick='whisper()'>悄悄話<3</button>" +
+                            "</div>";
+                if (prdname === "") {
+                    el.innerHTML = top2  + "<hr/><div class='loadMorePosts_name2_set19' >尚無貼文</div>";
+                }else{
+                    if (loadedPosts_name2 === 0) {
+                        el.innerHTML = top2 + prdname.replace(/\n/g, "<br>");
+                    } else {
+                        el.innerHTML += prdname.replace(/\n/g, "<br>");
+                    }
+                }
+
+                loadedPosts_name2 += postsToLoad_name2;
+  
+
+                currentPage_name2++;
+
+                if (postsToLoad_name2 < postsPerPage_name2) {
+                    allPostsLoaded_name2 = true; 
+                }
+
+                $("#loading_name2").hide();
+                loadingPosts_name2 = false;
+
+                //更多設定(搜尋)
+                const messageBoardOutput_conntent=data4[7]
+                const messageBoardOutput = document.getElementById('messageboardoutput_name2');
+                const moreButton = document.getElementById('more_name2');
+                const maxLength = 96; 
+                const maxLines = 3; 
+                function getLines(text) {
+                    return text.split(/\r?\n/);
+                }
+                function truncateContent(content, visibleLines) {
+                    const lines = getLines(content);
+                    let truncatedContent = '';
+                    let lineCount = 0;
+
+                    for (let i = 0; i < lines.length; i++) {
+                        if (lineCount >= visibleLines) {
+                            break;
+                        }
+
+                        const line = lines[i];
+
+                        if (truncatedContent.length + line.length + 1 > maxLength) {
+                            truncatedContent += line.substring(0, maxLength - truncatedContent.length);
+                            break;
+                        } else {
+                            truncatedContent += line + '\n';
+                            lineCount++;
+                        }
+                    }
+
+                    return truncatedContent.trim();
+                }
+
+                function updateMessageBoard() {
+                    const content = messageBoardOutput_conntent;
+                    const lines = getLines(content);
+
+                    if (lines.length > maxLines || content.length > maxLength) {
+                        const truncatedContent = truncateContent(content, maxLines);
+                        messageBoardOutput.innerHTML = truncatedContent;
+                        moreButton.style.display = 'inline-block'; 
+                    } else {
+                        moreButton.style.display = 'none'; 
+                    }
+                }
+
+                function showFullContent() {
+                    messageBoardOutput.innerHTML = content; 
+                    moreButton.style.display = 'none';
+                }
+                let content = messageBoardOutput_conntent;
+                if(tf=="0"){
+                    updateMessageBoard();
+                    moreButton.addEventListener('click', showFullContent);
+                    tf++
+                }else{
+                    moreButton.addEventListener('click', showFullContent);
+                }
+            })
+            .catch(error => {
+                console.error('發生錯誤:', error);
+                $("#loading_name2").hide();
+                loadingPosts_name2 = false;
+            });
+            
+        }
+        loadMorePosts_name2();
+
+ 
+
+
+
+        //fetch非本人用戶(搜尋用)
+        fetch('/member/search',{ method: "POST"}) 
+        .then(response => response.json())  
+        .then(responseData => {
+            data5 = responseData;
+            const books =data5[0]
+            const booksphoto =data5[1]
+            const bookList = document.querySelector("[data-books]");
+            const searchInput = document.querySelector("[name='search']");
+
+            function booksFilter(targetBook, allBooks = books) {
+                return allBooks.map((book, index) => ({ book, photo: booksphoto[index] }))
+                .filter(({ book }) => {
+                    const regex = new RegExp(`^${targetBook}`, 'i');
+                    return regex.test(book);
+                });
+            }
+
+            function renderBooks(filteredBooks) {
+                const html = filteredBooks.map(({ book, photo }) => {
+                    return `<div data-photo="${photo}" class='bookList__item d-flex mt-2 html_set' >
+                                <img src="static/photo/${photo}" width="37" height="37" class='html_set2' />
+                                <div class='html_set3' >
+                                    <a href='#' class='html_set4'  >${book}</a>
+                                </div>
+                            </div>`;
+                }).join("");
+                if (filteredBooks.length === 0) {
+                    bookList.innerHTML = "<div class='grey' bookList_set >搜尋結果</div><div class='bookList_set2' >查無此帳戶</div>";
+                }else{
+                    bookList.innerHTML = "<div class='grey bookList_set3' >搜尋結果</div>"+html;
+                }
+                
+                
+                var bookItems = document.querySelectorAll('.bookList__item');
+                bookItems.forEach((bookItem, photo) => {
+                    bookItem.addEventListener('click', () => {
+                        var clickedBook = bookItem.querySelector('a').innerText;
+                        var clickedPhoto = bookItem.getAttribute('data-photo');
+                        //打字搜尋
+                        loadMorePosts_name2();
+                        setTimeout(function() { 
+                            bookList_his.style.display = 'none';
+                            searchInput.style.display = 'none';
+                            bookList2.style.display = 'block';
+                        },300)
+                        setTimeout(function() { 
+                            window.location.href = '/member?name2=name2';
+                        },100);
+                        localStorage.setItem('searchbackVisible2', 'true');//顯示
+                        localStorage.setItem('clickedBook2',clickedBook);
+                        var formData = new FormData();
+                        if (!history.includes(clickedBook)) {
+                            history.push(clickedBook);
+                            history_photo.push(clickedPhoto); 
+
+                            formData.append("history",clickedBook );
+                            formData.append("history_photo", clickedPhoto);
+                            var options = {method: 'POST',body:formData};
+                            fetch('/member/rememberhistory',options) 
+                            .then(response => response.json())  
+                            .then(responseData => {
+                                data6 = responseData;
+                            })
+                            .catch(error => console.error('發生錯誤:', error)); 
+                        }
+
+                        bookList_his.style.display="none"
+                        const html2 = history.map((book, index) => {
+                            return `<div class='container-fluid'>
+                                        <div class='d-flex align-items-center justify-content-between'>
+                                            <div class='bookList__item2 d-flex mt-2 html2_set' data-photo="${history_photo[index]}" >
+                                                <img src="static/photo/${history_photo[index]}" width="37" height="37" class='html2_photo_set' />
+                                                <div class='html2_div_set' >
+                                                    <a href='#' class='html2_a_set' >${book}</a>
+                                                </div>
+                                            </div>
+                                            <img  class='smallbuttonX' src='static/x.png' width='15' height='15'/>
+                                        </div>
+                                    </div>`;
+                        }).join("");
+    
+                        if (history.length === 0) {
+                            bookList_his.innerHTML = "<div class='grey bookList_his_set' >歷史紀錄</div><div class='bookList_his_set2' >無歷史紀錄</div>";
+                        }else{
+                            bookList_his.innerHTML = "<div class='grey bookList_his_set3' >歷史紀錄</div>" + html2;
+                        }                        
+                    });
+                });
+            }
+            
+    
+            function handleInput() {
+                const searchValue = searchInput.value;
+                const filteredBooks = booksFilter(searchValue);
+                renderBooks(filteredBooks);
+                if (searchValue.trim() !== "") {
+                    bookList.style.display = "block";
+                    bookList_his.style.display="none"
+                } else {
+                    bookList.style.display = "none";
+                    bookList_his.style.display="block"
+                }   
+            }
+            searchInput.addEventListener("input", handleInput);
+            renderBooks(booksFilter(""));     
+        })
+        .catch(error => console.error('發生錯誤:', error));
+  
+        //點名稱頭貼轉到個人資訊 (公開)  
+        function myFunction7(element){
+                b = element.id.replace('my7', ''); 
+                if(data2[9][b]!=userid){  
+                    setTimeout(function(){
+                        $('.form1').hide(); 
+                        $('.form2').show();
+                        $('.form3').hide();
+                        $('.form4').hide();
+                        $('.form5').hide(); 
+                        $('#home').show(); 
+                        $('#home2').hide();
+                        $('#search').hide();
+                        $('#search2').show();
+                        $('#edit').show();
+                        $('#edit2').hide();
+                        $('#heart').show();
+                        $('#heart2').hide();
+                        $('#user').show();
+                        $('#user2').hide();
+                        bookList_his.style.display = 'none';
+                        searchInput.style.display = 'none';
+                        bookList2.style.display = 'block';  
+                    },300)  
+                    localStorage.setItem('searchbackVisible2', 'true');//顯示
+                    localStorage.setItem('clickedBook2',data2[9][b]);
+                    loadMorePosts_name2();
+                    setTimeout(function(){
+                        window.location.href = '/member?name2=name2';
+                    },100)  
+                }else{
+                    $('.form1').hide(); 
+                    $('.form2').hide();
+                    $('.form3').hide();
+                    $('.form4').hide();
+                    $('.form5').show(); 
+                    $('#home').show(); 
+                    $('#home2').hide();
+                    $('#search').show();
+                    $('#search2').hide();
+                    $('#edit').show();
+                    $('#edit2').hide();
+                    $('#heart').show();
+                    $('#heart2').hide();
+                    $('#user').hide();
+                    $('#user2').show();
+                    $('#form5').animate({ scrollTop: 0 }, 0, function() {
+                        const newUrl = "/member?name=name";
+                        window.history.pushState({ path: newUrl }, '', newUrl);
+                        loadMorePosts_name();
+                    });
+                }
+            }
+            //點名稱頭貼轉到個人資訊(追蹤)
+            function myFunction7_track(element){
+                b = element.id.replace('my7_track', ''); 
+                setTimeout(function(){
+                    $('.form1').hide(); 
+                    $('.form2').show();
+                    $('.form3').hide();
+                    $('.form4').hide();
+                    $('.form5').hide(); 
+                    $('#home').show(); 
+                    $('#home2').hide();
+                    $('#search').hide();
+                    $('#search2').show();
+                    $('#edit').show();
+                    $('#edit2').hide();
+                    $('#heart').show();
+                    $('#heart2').hide();
+                    $('#user').show();
+                    $('#user2').hide();
+                    bookList_his.style.display = 'none';
+                    searchInput.style.display = 'none';
+                    bookList2.style.display = 'block'; 
+                },300)      
+                localStorage.setItem('searchbackVisible2', 'true');//顯示
+                localStorage.setItem('clickedBook2',data2_track[9][b]);
+                loadMorePosts_name2();
+                setTimeout(function(){
+                    window.location.href = '/member?name2=name2';
+                },100)  
+            }
+
+            //禁止放大
+            document.addEventListener('touchmove', (event) => {
+                if (event.touches && event.touches.length > 1) {
+                    event.preventDefault();
+                }
+            }, { passive: false });
+
+            let lastTap = 0;
+            document.addEventListener('touchstart', (event) => {
+                const currentTime = new Date().getTime();
+                const tapLength = currentTime - lastTap;
+
+                if (tapLength < 300 && tapLength > 0) {
+                    // 检测到双击
+                    event.preventDefault();
+                }
+                lastTap = currentTime;
+            }, { passive: false });
+
+            
+            // 禁用上下文菜單（右鍵菜單）
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+            });
+
+            // 禁用長按
+            document.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+            });
+
+            //永無BUG
+            console.log(`
+                  _ooOoo_
+                 o8888888o
+                 88" . "88
+                 (| -_- |)
+                 O\\  =  /O
+              ____/\`---'\\____
+            .'  \\\\|     |//  \`.
+            /  \\\\|||  :  |||//  \\
+            /  _||||| -:- |||||-  \\
+            |   | \\\\\\  -  /// |   |
+            | \\_|  ''\\---/''  |   |
+            \\  .-\\__  \`-\`  ___/-. /
+        ___\`. .'  /--.--\\  \`. . __
+        ."" '<  \`.___\\_<|>_/___.'  >'"".
+    | | :  \`- \\\`.;\`\\ _ /\`;.\`/ - \` : | |
+     \\  \\ \`-.   \\_ __\\ /__ _/   .-\` /  /
+  =====\`-.____\`-.___\\_____/___.-\`____.-'=====
+                    \`=---='
+
+ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            佛祖保佑       永無BUG
+`);
+        </script>       
+
+
+        <!--Bootstrap-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <!--Bootstrap tooltips-->
+        <script>
+            //const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+            //const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+        </script>
+        <!--Bootstrap Popovers-->
+        <script>
+            //const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+            //const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+        </script>
+    </body>
+</html>
+
+
+
+
+
+
+

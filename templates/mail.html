@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Mail test</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <h1>Hello , {{ userid }}</h1>
+    <h2>點擊以下連結找回您的密碼:</h2>
+        <form action="http://127.0.0.1:3000/password" method="POST">
+            <input name="userid" value={{ userid }} type="hidden">
+                <button>找回密碼</button>
+            </input>
+        </form>
+    <h2>如果您不曾申請該請求，只需將其刪除，或許有人想嘗試登入您的帳戶。</h2>
+</body>
+
+</html>
