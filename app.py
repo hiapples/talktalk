@@ -2815,5 +2815,5 @@ def member_myFunction2_name2(userid):
 app.config['SECRET_KEY'] = 'bbb'
 app.secret_key="aaa"
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run()
 
