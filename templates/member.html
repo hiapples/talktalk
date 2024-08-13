@@ -2540,7 +2540,7 @@
             bookList2.style.display = 'block';
         }
         function share(){
-            var text = `/member/${userid}`
+            var text = `https://popalz.net/member/${userid}`
             navigator.clipboard.writeText(text).then(function() {
             }).catch(function(error) {
                 console.error("複製失敗：", error);
