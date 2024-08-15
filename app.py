@@ -78,7 +78,8 @@ def send():
         msg.body =  msg.html
         mail.send(msg)
         return redirect("/success?msg=傳送成功&msg2=請查看您的信箱！")
-    return redirect("/error?msg=傳送錯誤&msg2=此電子信箱尚未註冊！")
+    else:
+        return redirect("/error?msg=傳送錯誤&msg2=此電子信箱尚未註冊！")
 
 ##忘記密碼連結 給密碼
 @app.route("/password",methods=["POST"])
