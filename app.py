@@ -71,8 +71,8 @@ def send():
     result=collection.find_one({
         "Email":Email
     })
-    userid=result["userid"]
     if result != None:
+        userid=result["userid"]
         msg = Message('忘記密碼申請', sender = "abc", recipients = [Email])
         msg.html = render_template("mail.html",userid=userid)
         msg.body =  msg.html
