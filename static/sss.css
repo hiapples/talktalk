@@ -138,7 +138,7 @@ body{
     margin-left: auto;
     margin-right: auto;
 }
-@media (max-width: 1200px) {
+@media (max-width: 576px) {
     .all {
         border: none!important;
         width: 100%; 
@@ -155,6 +155,29 @@ body{
     }
     .all3{
         height: 65.5vh!important;
+    }
+    body{
+        background-image: none;
+        background-color: #E0E0E0;
+    }
+}
+@media (max-width: 1200px) {
+    .all {
+        border: none!important;
+        width: 100%; 
+        padding-right: 30px; 
+        padding-left: 30px;
+        height: 80vh!important;
+        border-radius: 0px!important;
+    }
+    .mt-4_all {
+        margin-top: 0px !important;
+    }
+    .all2{
+        height: 81vh!important;
+    }
+    .all3{
+        height: 75.5vh!important;
     }
     body{
         background-image: none;
