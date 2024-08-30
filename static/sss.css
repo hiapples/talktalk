@@ -161,7 +161,7 @@ body{
         background-color: #E0E0E0;
     }
 }
-@media (max-width: 1200px) {
+@media (min-width: 576px) and (max-width: 1200px)  {
     .all {
         border: none!important;
         width: 100%; 
